@@ -14,7 +14,6 @@ import {
   SUBTASK_SET_PARENT_STRUCT,
   GET_STORAGE_SLOTS,
 } from './task-names';
-
 import { SomeStatus } from './types';
 
 task(TASK_DEPLOY)
@@ -63,7 +62,9 @@ subtask(SUBTASK_DEPLOY_RETRIEVER)
       'StorageRetriever',
       deployer,
     );
-    const storageRetriever = await (await factory.deploy(params.nickname)).deployed();
+    const storageRetriever = await (
+      await factory.deploy(params.nickname)
+    ).deployed();
 
     logDeployment(
       'Greeter',
@@ -391,8 +392,13 @@ task(GET_STORAGE_SLOTS)
   )
   .setAction(async (params: string, hre) => {
     // overall 64 slots(because of structs)
-    for (let index = 0; index <= 64; index++){
-      console.log(`[${index}]` + 
-        await hre.ethers.provider.getStorageAt(params.storageRetriever, index))
-     }
-});
+    for (let index = 0; index <= 64; index++) {
+      console.log(
+        `[${index}]` +
+          (await hre.ethers.provider.getStorageAt(
+            params.storageRetriever,
+            index,
+          )),
+      );
+    }
+  });
