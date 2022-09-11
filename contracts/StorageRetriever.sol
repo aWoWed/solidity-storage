@@ -9,5 +9,6 @@ contract StorageRetriever is Setters {
         _deployerAddress = msg.sender;
         _payableAddress = payable(msg.sender);
         _deployerNickname = deployerNickname;
+        _data = "Lorem ipsum dolor sit amet, consectetur adipiscing elit";
     }
 }

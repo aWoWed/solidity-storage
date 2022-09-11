@@ -10,32 +10,32 @@ contract Setters is Getters, Ownable {
         _data = data;
     }
 
-    function addThirtyTwoBytesNumberArrayItem(uint256 item) public {
+    function addThirtyTwoBytesNumberArrayItem(uint256 item) external {
         _thirtyTwoBytesNumberArray.push(item);
     }
 
-    function addSixteenBytesNumberArrayItem(uint128 item) public {
+    function addSixteenBytesNumberArrayItem(uint128 item) external {
         _sixteenBytesNumberArray.push(item);
     }
 
-    function addAddressesArrayItem(address item) public {
+    function addAddressesArrayItem(address item) external {
         _addressesArray.push(item);
     }
 
-    function addStringArrayItem(string calldata item) public {
+    function addStringArrayItem(string calldata item) external {
         _stringArray.push(item);
     }
 
-    function addBoolArrayItem(bool item) public {
+    function addBoolArrayItem(bool item) external {
         _boolArray.push(item);
     }
 
-    function addDefaultMappingItem(address item) public {
+    function addDefaultMappingItem(address item) external {
         _defaultMappingCounter = _defaultMappingCounter + 1;
         _defaultMapping[_defaultMappingCounter] = item;
     }
 
-    function addNestedMappingItem(bool item) public {
+    function addNestedMappingItem(bool item) external {
         _nestedMappingCounter = _nestedMappingCounter + 1;
         _nestedMapping[_nestedMappingCounter][msg.sender] = item;
     }
@@ -44,7 +44,7 @@ contract Setters is Getters, Ownable {
         uint8 _oneByteNumber,
         uint64 _eightBytesNumber,
         SomeStatus _status
-    ) internal pure returns (OneStorageSlotStruct memory newStruct) {
+    ) private pure returns (OneStorageSlotStruct memory newStruct) {
         newStruct = OneStorageSlotStruct({
             oneByteNumber: _oneByteNumber,
             eightBytesNumber: _eightBytesNumber,
@@ -57,7 +57,7 @@ contract Setters is Getters, Ownable {
         address _someAddress,
         bytes calldata _data,
         SomeStatus _status
-    ) internal pure returns (BytesStruct memory newStruct) {
+    ) private pure returns (BytesStruct memory newStruct) {
         newStruct = BytesStruct({
             amount: _amount,
             someAddress: _someAddress,
@@ -70,7 +70,7 @@ contract Setters is Getters, Ownable {
         string calldata _str,
         bytes32 _thirtyTwoBytes,
         bool _isCreated
-    ) internal pure returns (StringStruct memory newStruct) {
+    ) private pure returns (StringStruct memory newStruct) {
         newStruct = StringStruct({
             str: _str,
             thirtyTwoBytes: _thirtyTwoBytes,
@@ -82,7 +82,7 @@ contract Setters is Getters, Ownable {
         uint256[] calldata _amounts,
         address[] calldata _addresses,
         SomeStatus _status
-    ) internal pure returns (ArrayStruct memory newStruct) {
+    ) private pure returns (ArrayStruct memory newStruct) {
         newStruct = ArrayStruct({
             amounts: _amounts,
             addresses: _addresses,
@@ -96,7 +96,7 @@ contract Setters is Getters, Ownable {
         bytes4 _functionSignature,
         uint256 _number,
         SomeStatus _status
-    ) internal pure returns (ParentStruct memory newStruct) {
+    ) private pure returns (ParentStruct memory newStruct) {
         ChildStruct memory _childStruct = ChildStruct({
             amount: _amount,
             someAddress: _someAddress,
@@ -126,7 +126,7 @@ contract Setters is Getters, Ownable {
         uint8 _oneByteNumber,
         uint64 _eightBytesNumber,
         SomeStatus _status
-    ) public {
+    ) external {
         _oneStorageSlotStructArray.push(
             _createOneStorageSlotStruct(
                 _oneByteNumber,
@@ -140,7 +140,7 @@ contract Setters is Getters, Ownable {
         uint8 _oneByteNumber,
         uint64 _eightBytesNumber,
         SomeStatus _status
-    ) public {
+    ) external {
         _oneStorageSlotStructMappingCounter =
             _oneStorageSlotStructMappingCounter +
             1;
@@ -157,7 +157,7 @@ contract Setters is Getters, Ownable {
         uint8 _oneByteNumber,
         uint64 _eightBytesNumber,
         SomeStatus _status
-    ) public {
+    ) external {
         _oneStorageSlotStructNestedMappingCounter =
             _oneStorageSlotStructNestedMappingCounter +
             1;
@@ -189,7 +189,7 @@ contract Setters is Getters, Ownable {
         address _someAddress,
         bytes calldata _data,
         SomeStatus _status
-    ) public {
+    ) external {
         _bytesStructArray.push(
             _createBytesStruct(_amount, _someAddress, _data, _status)
         );
@@ -200,7 +200,7 @@ contract Setters is Getters, Ownable {
         address _someAddress,
         bytes calldata _data,
         SomeStatus _status
-    ) public {
+    ) external {
         _bytesStructMappingCounter = _bytesStructMappingCounter + 1;
         _bytesStructMapping[_bytesStructMappingCounter] = _createBytesStruct(
             _amount,
@@ -215,7 +215,7 @@ contract Setters is Getters, Ownable {
         address _someAddress,
         bytes calldata _data,
         SomeStatus _status
-    ) public {
+    ) external {
         _bytesStructNestedMappingCounter = _bytesStructNestedMappingCounter + 1;
         _bytesStructNestedMapping[_bytesStructNestedMappingCounter][
             msg.sender
@@ -234,7 +234,7 @@ contract Setters is Getters, Ownable {
         string calldata _str,
         bytes32 _thirtyTwoBytes,
         bool _isCreated
-    ) public {
+    ) external {
         _stringStructArray.push(
             _createStringStruct(_str, _thirtyTwoBytes, _isCreated)
         );
@@ -244,7 +244,7 @@ contract Setters is Getters, Ownable {
         string calldata _str,
         bytes32 _thirtyTwoBytes,
         bool _isCreated
-    ) public {
+    ) external {
         _stringStructMappingCounter = _stringStructMappingCounter + 1;
         _stringStructMapping[_stringStructMappingCounter] = _createStringStruct(
             _str,
@@ -257,7 +257,7 @@ contract Setters is Getters, Ownable {
         string calldata _str,
         bytes32 _thirtyTwoBytes,
         bool _isCreated
-    ) public {
+    ) external {
         _stringStructNestedMappingCounter =
             _stringStructNestedMappingCounter +
             1;
@@ -278,7 +278,7 @@ contract Setters is Getters, Ownable {
         uint256[] calldata _amounts,
         address[] calldata _addresses,
         SomeStatus _status
-    ) public {
+    ) external {
         _arrayStructArray.push(
             _createArrayStruct(_amounts, _addresses, _status)
         );
@@ -288,7 +288,7 @@ contract Setters is Getters, Ownable {
         uint256[] calldata _amounts,
         address[] calldata _addresses,
         SomeStatus _status
-    ) public {
+    ) external {
         _arrayStructMappingCounter = _arrayStructMappingCounter + 1;
         _arrayStructMapping[_arrayStructMappingCounter] = _createArrayStruct(
             _amounts,
@@ -301,7 +301,7 @@ contract Setters is Getters, Ownable {
         uint256[] calldata _amounts,
         address[] calldata _addresses,
         SomeStatus _status
-    ) public {
+    ) external {
         _arrayStructNestedMappingCounter = _arrayStructNestedMappingCounter + 1;
         _arrayStructNestedMapping[_arrayStructNestedMappingCounter][
             msg.sender
@@ -330,7 +330,7 @@ contract Setters is Getters, Ownable {
         bytes4 _functionSignature,
         uint256 _number,
         SomeStatus _status
-    ) public {
+    ) external {
         _parentStructArray.push(
             _createParentStruct(
                 _amount,
@@ -348,7 +348,7 @@ contract Setters is Getters, Ownable {
         bytes4 _functionSignature,
         uint256 _number,
         SomeStatus _status
-    ) public {
+    ) external {
         _parentStructMappingCounter = _parentStructMappingCounter + 1;
         _parentStructMapping[_parentStructMappingCounter] = _createParentStruct(
             _amount,
@@ -365,7 +365,7 @@ contract Setters is Getters, Ownable {
         bytes4 _functionSignature,
         uint256 _number,
         SomeStatus _status
-    ) public {
+    ) external {
         _parentStructNestedMappingCounter =
             _parentStructNestedMappingCounter +
             1;

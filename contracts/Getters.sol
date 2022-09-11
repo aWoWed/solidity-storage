@@ -6,7 +6,7 @@ import "./ChildContract.sol";
 import "./Types.sol";
 
 contract Getters is ChildContract, Types {
-    uint256 private constant _CONST_NUMBER = 100;
+    uint256 internal constant _CONST_NUMBER = 100;
 
     uint256 internal _thirtyTwoBytesNumber = 5556;
     uint128 internal _sixteenBytesNumber = 13267176253;
