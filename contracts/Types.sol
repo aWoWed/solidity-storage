@@ -30,7 +30,7 @@ contract Types {
     }
 
     struct ArrayStruct {
-        address payable[] addresses;
+        address[] addresses;
         uint256[] amounts;
         SomeStatus status;
     }
