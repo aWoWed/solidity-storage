@@ -110,7 +110,7 @@ contract Setters is Getters, Ownable {
         });
     }
 
-    function setOneStorageSlotStructArray(
+    function setOneStorageSlotStruct(
         uint8 _oneByteNumber,
         uint64 _eightBytesNumber,
         SomeStatus _status
@@ -170,7 +170,7 @@ contract Setters is Getters, Ownable {
         );
     }
 
-    function setBytesStructArray(
+    function setBytesStruct(
         uint256 _amount,
         address _someAddress,
         bytes calldata _data,
@@ -222,7 +222,7 @@ contract Setters is Getters, Ownable {
         ] = _createBytesStruct(_amount, _someAddress, _data, _status);
     }
 
-    function setStringStructArray(
+    function setStringStruct(
         string calldata _str,
         bytes32 _thirtyTwoBytes,
         bool _isCreated
@@ -266,7 +266,7 @@ contract Setters is Getters, Ownable {
         ] = _createStringStruct(_str, _thirtyTwoBytes, _isCreated);
     }
 
-    function setArrayStructArray(
+    function setArrayStruct(
         uint256[] calldata _amounts,
         address[] calldata _addresses,
         SomeStatus _status
@@ -308,7 +308,7 @@ contract Setters is Getters, Ownable {
         ] = _createArrayStruct(_amounts, _addresses, _status);
     }
 
-    function setParentStructParent(
+    function setParentStruct(
         uint256 _amount,
         address _someAddress,
         bytes4 _functionSignature,
@@ -324,7 +324,7 @@ contract Setters is Getters, Ownable {
         );
     }
 
-    function addParentStructParentItem(
+    function addParentStructArrayItem(
         uint256 _amount,
         address _someAddress,
         bytes4 _functionSignature,
