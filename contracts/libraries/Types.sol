@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-contract Types {
+library Types {
     enum SomeStatus {
         NotCreated,
         Canceled,

@@ -3,9 +3,10 @@
 pragma solidity ^0.8.0;
 
 import "./ChildContract.sol";
-import "./Types.sol";
+import "./interfaces/IGetters.sol";
+import {Types} from "./libraries/Types.sol";
 
-contract Getters is ChildContract, Types {
+contract Getters is ChildContract, IGetters {
     uint256 internal constant _CONST_NUMBER = 100;
 
     uint256 internal _thirtyTwoBytesNumber = 5556;
@@ -40,118 +41,134 @@ contract Getters is ChildContract, Types {
     uint256 internal _nestedMappingCounter;
     mapping(uint256 => mapping(address => bool)) internal _nestedMapping;
 
-    OneStorageSlotStruct internal _oneStorageSlotStruct;
-    OneStorageSlotStruct[] internal _oneStorageSlotStructArray;
+    Types.OneStorageSlotStruct internal _oneStorageSlotStruct;
+    Types.OneStorageSlotStruct[] internal _oneStorageSlotStructArray;
     uint256 internal _oneStorageSlotStructMappingCounter;
-    mapping(uint256 => OneStorageSlotStruct)
+    mapping(uint256 => Types.OneStorageSlotStruct)
         internal _oneStorageSlotStructMapping;
     uint256 internal _oneStorageSlotStructNestedMappingCounter;
-    mapping(uint256 => mapping(address => OneStorageSlotStruct))
+    mapping(uint256 => mapping(address => Types.OneStorageSlotStruct))
         internal _oneStorageSlotStructNestedMapping;
 
-    BytesStruct internal _bytesStruct;
-    BytesStruct[] internal _bytesStructArray;
+    Types.BytesStruct internal _bytesStruct;
+    Types.BytesStruct[] internal _bytesStructArray;
     uint256 internal _bytesStructMappingCounter;
-    mapping(uint256 => BytesStruct) internal _bytesStructMapping;
+    mapping(uint256 => Types.BytesStruct) internal _bytesStructMapping;
     uint256 internal _bytesStructNestedMappingCounter;
-    mapping(uint256 => mapping(address => BytesStruct))
+    mapping(uint256 => mapping(address => Types.BytesStruct))
         internal _bytesStructNestedMapping;
 
-    StringStruct internal _stringStruct;
-    StringStruct[] internal _stringStructArray;
+    Types.StringStruct internal _stringStruct;
+    Types.StringStruct[] internal _stringStructArray;
     uint256 internal _stringStructMappingCounter;
-    mapping(uint256 => StringStruct) internal _stringStructMapping;
+    mapping(uint256 => Types.StringStruct) internal _stringStructMapping;
     uint256 internal _stringStructNestedMappingCounter;
-    mapping(uint256 => mapping(address => StringStruct))
+    mapping(uint256 => mapping(address => Types.StringStruct))
         internal _stringStructNestedMapping;
 
-    ArrayStruct internal _arrayStruct;
-    ArrayStruct[] internal _arrayStructArray;
+    Types.ArrayStruct internal _arrayStruct;
+    Types.ArrayStruct[] internal _arrayStructArray;
     uint256 internal _arrayStructMappingCounter;
-    mapping(uint256 => ArrayStruct) internal _arrayStructMapping;
+    mapping(uint256 => Types.ArrayStruct) internal _arrayStructMapping;
     uint256 internal _arrayStructNestedMappingCounter;
-    mapping(uint256 => mapping(address => ArrayStruct))
+    mapping(uint256 => mapping(address => Types.ArrayStruct))
         internal _arrayStructNestedMapping;
 
-    ParentStruct internal _parentStruct;
-    ParentStruct[] internal _parentStructArray;
+    Types.ParentStruct internal _parentStruct;
+    Types.ParentStruct[] internal _parentStructArray;
     uint256 internal _parentStructMappingCounter;
-    mapping(uint256 => ParentStruct) internal _parentStructMapping;
+    mapping(uint256 => Types.ParentStruct) internal _parentStructMapping;
     uint256 internal _parentStructNestedMappingCounter;
-    mapping(uint256 => mapping(address => ParentStruct))
+    mapping(uint256 => mapping(address => Types.ParentStruct))
         internal _parentStructNestedMapping;
 
-    function getThirtyTwoBytesNumber() public view returns (uint256) {
+    function getThirtyTwoBytesNumber() public view override returns (uint256) {
         return _thirtyTwoBytesNumber;
     }
 
-    function getSixteenBytesNumber() public view returns (uint128) {
+    function getSixteenBytesNumber() public view override returns (uint128) {
         return _sixteenBytesNumber;
     }
 
-    function getEightBytesNumber() public view returns (uint64) {
+    function getEightBytesNumber() public view override returns (uint64) {
         return _eightBytesNumber;
     }
 
-    function getFourBytesNumber() public view returns (uint32) {
+    function getFourBytesNumber() public view override returns (uint32) {
         return _fourBytesNumber;
     }
 
-    function getTwoBytesNumber() public view returns (uint16) {
+    function getTwoBytesNumber() public view override returns (uint16) {
         return _twoBytesNumber;
     }
 
-    function getOneByteNumber() public view returns (uint8) {
+    function getOneByteNumber() public view override returns (uint8) {
         return _oneByteNumber;
     }
 
-    function getDeployerAddress() public view returns (address) {
+    function getDeployerAddress() public view override returns (address) {
         return _deployerAddress;
     }
 
-    function getPayableAddress() public view returns (address payable) {
+    function getPayableAddress()
+        public
+        view
+        override
+        returns (address payable)
+    {
         return _payableAddress;
     }
 
-    function getIsDeployed() public view returns (bool) {
+    function getIsDeployed() public view override returns (bool) {
         return _isDeployed;
     }
 
-    function getIsNotDeployed() public view returns (bool) {
+    function getIsNotDeployed() public view override returns (bool) {
         return _isNotDeployed;
     }
 
-    function getFunctionSignature() public view returns (bytes4) {
+    function getFunctionSignature() public view override returns (bytes4) {
         return _functionSignature;
     }
 
-    function getEightBytes() public view returns (bytes8) {
+    function getEightBytes() public view override returns (bytes8) {
         return _eightBytes;
     }
 
-    function getSixteenBytes() public view returns (bytes16) {
+    function getSixteenBytes() public view override returns (bytes16) {
         return _sixteenBytes;
     }
 
-    function getThirtyTwoBytes() public view returns (bytes32) {
+    function getThirtyTwoBytes() public view override returns (bytes32) {
         return _thirtyTwoBytes;
     }
 
-    function getDeployerNickname() public view returns (string memory) {
+    function getDeployerNickname()
+        public
+        view
+        override
+        returns (string memory)
+    {
         return _deployerNickname;
     }
 
-    function getData() public view returns (bytes memory) {
+    function getData() public view override returns (bytes memory) {
         return _data;
     }
 
-    function getFixedSizeArray() public view returns (uint256[6] memory) {
+    function getFixedSizeArray()
+        public
+        view
+        override
+        returns (uint256[6] memory)
+    {
         return _fixedSizeArray;
     }
 
     function getThirtyTwoBytesNumberArrayLength()
         public
         view
+        override
         returns (uint256)
     {
         return _thirtyTwoBytesNumberArray.length;
@@ -160,66 +177,85 @@ contract Getters is ChildContract, Types {
     function getThirtyTwoBytesNumberArrayItem(uint256 id)
         public
         view
+        override
         returns (uint256)
     {
         return _thirtyTwoBytesNumberArray[id];
     }
 
-    function getSixteenBytesNumberArrayLength() public view returns (uint256) {
+    function getSixteenBytesNumberArrayLength()
+        public
+        view
+        override
+        returns (uint256)
+    {
         return _sixteenBytesNumberArray.length;
     }
 
     function getSixteenBytesNumberArrayItem(uint256 id)
         public
         view
+        override
         returns (uint256)
     {
         return _sixteenBytesNumberArray[id];
     }
 
-    function getAddressArrayLength() public view returns (uint256) {
+    function getAddressArrayLength() public view override returns (uint256) {
         return _addressesArray.length;
     }
 
-    function getAddressArrayItem(uint256 id) public view returns (address) {
+    function getAddressArrayItem(uint256 id)
+        public
+        view
+        override
+        returns (address)
+    {
         return _addressesArray[id];
     }
 
-    function getStringArrayLength() public view returns (uint256) {
+    function getStringArrayLength() public view override returns (uint256) {
         return _stringArray.length;
     }
 
     function getStringArrayItem(uint256 id)
         public
         view
+        override
         returns (string memory)
     {
         return _stringArray[id];
     }
 
-    function getBoolArrayLength() public view returns (uint256) {
+    function getBoolArrayLength() public view override returns (uint256) {
         return _boolArray.length;
     }
 
-    function getBoolArrayItem(uint256 id) public view returns (bool) {
+    function getBoolArrayItem(uint256 id) public view override returns (bool) {
         return _boolArray[id];
     }
 
-    function getDefaultMappingCounter() public view returns (uint256) {
+    function getDefaultMappingCounter() public view override returns (uint256) {
         return _defaultMappingCounter;
     }
 
-    function getDefaultMappingItem(uint256 id) public view returns (address) {
+    function getDefaultMappingItem(uint256 id)
+        public
+        view
+        override
+        returns (address)
+    {
         return _defaultMapping[id];
     }
 
-    function getNestedMappingCounter() public view returns (uint256) {
+    function getNestedMappingCounter() public view override returns (uint256) {
         return _nestedMappingCounter;
     }
 
     function getNestedMappingItem(uint256 id, address _address)
         public
         view
+        override
         returns (bool)
     {
         return _nestedMapping[id][_address];
@@ -228,7 +264,8 @@ contract Getters is ChildContract, Types {
     function getOneStorageSlotStruct()
         public
         view
-        returns (OneStorageSlotStruct memory)
+        override
+        returns (Types.OneStorageSlotStruct memory)
     {
         return _oneStorageSlotStruct;
     }
@@ -236,6 +273,7 @@ contract Getters is ChildContract, Types {
     function getOneStorageSlotStructArrayLength()
         public
         view
+        override
         returns (uint256)
     {
         return _oneStorageSlotStructArray.length;
@@ -244,7 +282,8 @@ contract Getters is ChildContract, Types {
     function getOneStorageSlotStructArrayItem(uint256 id)
         public
         view
-        returns (OneStorageSlotStruct memory)
+        override
+        returns (Types.OneStorageSlotStruct memory)
     {
         return _oneStorageSlotStructArray[id];
     }
@@ -252,6 +291,7 @@ contract Getters is ChildContract, Types {
     function getOneStorageSlotStructMappingCounter()
         public
         view
+        override
         returns (uint256)
     {
         return _oneStorageSlotStructMappingCounter;
@@ -260,7 +300,8 @@ contract Getters is ChildContract, Types {
     function getOneStorageSlotStructMappingItem(uint256 id)
         public
         view
-        returns (OneStorageSlotStruct memory)
+        override
+        returns (Types.OneStorageSlotStruct memory)
     {
         return _oneStorageSlotStructMapping[id];
     }
@@ -268,6 +309,7 @@ contract Getters is ChildContract, Types {
     function getOneStorageSlotStructNestedMappingCounter()
         public
         view
+        override
         returns (uint256)
     {
         return _oneStorageSlotStructNestedMappingCounter;
@@ -276,35 +318,53 @@ contract Getters is ChildContract, Types {
     function getOneStorageSlotStructNestedItem(uint256 id, address _address)
         public
         view
-        returns (OneStorageSlotStruct memory)
+        override
+        returns (Types.OneStorageSlotStruct memory)
     {
         return _oneStorageSlotStructNestedMapping[id][_address];
     }
 
-    function getBytesStruct() public view returns (BytesStruct memory) {
+    function getBytesStruct()
+        public
+        view
+        override
+        returns (Types.BytesStruct memory)
+    {
         return _bytesStruct;
     }
 
-    function getBytesStructArrayLength() public view returns (uint256) {
+    function getBytesStructArrayLength()
+        public
+        view
+        override
+        returns (uint256)
+    {
         return _bytesStructArray.length;
     }
 
     function getBytesStructArrayItem(uint256 id)
         public
         view
-        returns (BytesStruct memory)
+        override
+        returns (Types.BytesStruct memory)
     {
         return _bytesStructArray[id];
     }
 
-    function getBytesStructMappingCounter() public view returns (uint256) {
+    function getBytesStructMappingCounter()
+        public
+        view
+        override
+        returns (uint256)
+    {
         return _bytesStructMappingCounter;
     }
 
     function getBytesStructMappingItem(uint256 id)
         public
         view
-        returns (BytesStruct memory)
+        override
+        returns (Types.BytesStruct memory)
     {
         return _bytesStructMapping[id];
     }
@@ -312,6 +372,7 @@ contract Getters is ChildContract, Types {
     function getBytesStructNestedMappingCounter()
         public
         view
+        override
         returns (uint256)
     {
         return _bytesStructNestedMappingCounter;
@@ -320,35 +381,53 @@ contract Getters is ChildContract, Types {
     function getBytesStructNestedItem(uint256 id, address _address)
         public
         view
-        returns (BytesStruct memory)
+        override
+        returns (Types.BytesStruct memory)
     {
         return _bytesStructNestedMapping[id][_address];
     }
 
-    function getStringStruct() public view returns (StringStruct memory) {
+    function getStringStruct()
+        public
+        view
+        override
+        returns (Types.StringStruct memory)
+    {
         return _stringStruct;
     }
 
-    function getStringStructArrayLength() public view returns (uint256) {
+    function getStringStructArrayLength()
+        public
+        view
+        override
+        returns (uint256)
+    {
         return _stringStructArray.length;
     }
 
     function getStringStructArrayItem(uint256 id)
         public
         view
-        returns (StringStruct memory)
+        override
+        returns (Types.StringStruct memory)
     {
         return _stringStructArray[id];
     }
 
-    function getStringStructMappingCounter() public view returns (uint256) {
+    function getStringStructMappingCounter()
+        public
+        view
+        override
+        returns (uint256)
+    {
         return _stringStructMappingCounter;
     }
 
     function getStringStructMappingItem(uint256 id)
         public
         view
-        returns (StringStruct memory)
+        override
+        returns (Types.StringStruct memory)
     {
         return _stringStructMapping[id];
     }
@@ -356,6 +435,7 @@ contract Getters is ChildContract, Types {
     function getStringStructNestedMappingCounter()
         public
         view
+        override
         returns (uint256)
     {
         return _stringStructNestedMappingCounter;
@@ -364,35 +444,53 @@ contract Getters is ChildContract, Types {
     function getStringStructNestedItem(uint256 id, address _address)
         public
         view
-        returns (StringStruct memory)
+        override
+        returns (Types.StringStruct memory)
     {
         return _stringStructNestedMapping[id][_address];
     }
 
-    function getArrayStruct() public view returns (ArrayStruct memory) {
+    function getArrayStruct()
+        public
+        view
+        override
+        returns (Types.ArrayStruct memory)
+    {
         return _arrayStruct;
     }
 
-    function getArrayStructArrayLength() public view returns (uint256) {
+    function getArrayStructArrayLength()
+        public
+        view
+        override
+        returns (uint256)
+    {
         return _arrayStructArray.length;
     }
 
     function getArrayStructArrayItem(uint256 id)
         public
         view
-        returns (ArrayStruct memory)
+        override
+        returns (Types.ArrayStruct memory)
     {
         return _arrayStructArray[id];
     }
 
-    function getArrayStructMappingCounter() public view returns (uint256) {
+    function getArrayStructMappingCounter()
+        public
+        view
+        override
+        returns (uint256)
+    {
         return _arrayStructMappingCounter;
     }
 
     function getArrayStructMappingItem(uint256 id)
         public
         view
-        returns (ArrayStruct memory)
+        override
+        returns (Types.ArrayStruct memory)
     {
         return _arrayStructMapping[id];
     }
@@ -400,6 +498,7 @@ contract Getters is ChildContract, Types {
     function getArrayStructNestedMappingCounter()
         public
         view
+        override
         returns (uint256)
     {
         return _arrayStructNestedMappingCounter;
@@ -408,35 +507,53 @@ contract Getters is ChildContract, Types {
     function getArrayStructNestedItem(uint256 id, address _address)
         public
         view
-        returns (ArrayStruct memory)
+        override
+        returns (Types.ArrayStruct memory)
     {
         return _arrayStructNestedMapping[id][_address];
     }
 
-    function getParentStruct() public view returns (ParentStruct memory) {
+    function getParentStruct()
+        public
+        view
+        override
+        returns (Types.ParentStruct memory)
+    {
         return _parentStruct;
     }
 
-    function getParentStructArrayLength() public view returns (uint256) {
+    function getParentStructArrayLength()
+        public
+        view
+        override
+        returns (uint256)
+    {
         return _parentStructArray.length;
     }
 
     function getParentStructArrayItem(uint256 id)
         public
         view
-        returns (ParentStruct memory)
+        override
+        returns (Types.ParentStruct memory)
     {
         return _parentStructArray[id];
     }
 
-    function getParentStructMappingCounter() public view returns (uint256) {
+    function getParentStructMappingCounter()
+        public
+        view
+        override
+        returns (uint256)
+    {
         return _parentStructMappingCounter;
     }
 
     function getParentStructMappingItem(uint256 id)
         public
         view
-        returns (ParentStruct memory)
+        override
+        returns (Types.ParentStruct memory)
     {
         return _parentStructMapping[id];
     }
@@ -444,6 +561,7 @@ contract Getters is ChildContract, Types {
     function getParentStructNestedMappingCounter()
         public
         view
+        override
         returns (uint256)
     {
         return _parentStructNestedMappingCounter;
@@ -452,7 +570,8 @@ contract Getters is ChildContract, Types {
     function getParentStructNestedItem(uint256 id, address _address)
         public
         view
-        returns (ParentStruct memory)
+        override
+        returns (Types.ParentStruct memory)
     {
         return _parentStructNestedMapping[id][_address];
     }

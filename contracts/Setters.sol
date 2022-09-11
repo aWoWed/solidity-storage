@@ -2,40 +2,42 @@
 
 pragma solidity ^0.8.0;
 
-import "./Getters.sol";
+import "./interfaces/ISetters.sol";
 import "./ownable/Ownable.sol";
+import "./Getters.sol";
+import {Types} from "./libraries/Types.sol";
 
-contract Setters is Getters, Ownable {
-    function setData(bytes calldata data) external onlyOwner {
+contract Setters is Ownable, Getters, ISetters {
+    function setData(bytes calldata data) external override onlyOwner {
         _data = data;
     }
 
-    function addThirtyTwoBytesNumberArrayItem(uint256 item) external {
+    function addThirtyTwoBytesNumberArrayItem(uint256 item) external override {
         _thirtyTwoBytesNumberArray.push(item);
     }
 
-    function addSixteenBytesNumberArrayItem(uint128 item) external {
+    function addSixteenBytesNumberArrayItem(uint128 item) external override {
         _sixteenBytesNumberArray.push(item);
     }
 
-    function addAddressesArrayItem(address item) external {
+    function addAddressesArrayItem(address item) external override {
         _addressesArray.push(item);
     }
 
-    function addStringArrayItem(string calldata item) external {
+    function addStringArrayItem(string calldata item) external override {
         _stringArray.push(item);
     }
 
-    function addBoolArrayItem(bool item) external {
+    function addBoolArrayItem(bool item) external override {
         _boolArray.push(item);
     }
 
-    function addDefaultMappingItem(address item) external {
+    function addDefaultMappingItem(address item) external override {
         _defaultMappingCounter = _defaultMappingCounter + 1;
         _defaultMapping[_defaultMappingCounter] = item;
     }
 
-    function addNestedMappingItem(bool item) external {
+    function addNestedMappingItem(bool item) external override {
         _nestedMappingCounter = _nestedMappingCounter + 1;
         _nestedMapping[_nestedMappingCounter][msg.sender] = item;
     }
@@ -43,9 +45,9 @@ contract Setters is Getters, Ownable {
     function _createOneStorageSlotStruct(
         uint8 _oneByteNumber,
         uint64 _eightBytesNumber,
-        SomeStatus _status
-    ) private pure returns (OneStorageSlotStruct memory newStruct) {
-        newStruct = OneStorageSlotStruct({
+        Types.SomeStatus _status
+    ) private pure returns (Types.OneStorageSlotStruct memory newStruct) {
+        newStruct = Types.OneStorageSlotStruct({
             oneByteNumber: _oneByteNumber,
             eightBytesNumber: _eightBytesNumber,
             status: _status
@@ -56,9 +58,9 @@ contract Setters is Getters, Ownable {
         uint256 _amount,
         address _someAddress,
         bytes calldata _data,
-        SomeStatus _status
-    ) private pure returns (BytesStruct memory newStruct) {
-        newStruct = BytesStruct({
+        Types.SomeStatus _status
+    ) private pure returns (Types.BytesStruct memory newStruct) {
+        newStruct = Types.BytesStruct({
             amount: _amount,
             someAddress: _someAddress,
             data: _data,
@@ -70,8 +72,8 @@ contract Setters is Getters, Ownable {
         string calldata _str,
         bytes32 _thirtyTwoBytes,
         bool _isCreated
-    ) private pure returns (StringStruct memory newStruct) {
-        newStruct = StringStruct({
+    ) private pure returns (Types.StringStruct memory newStruct) {
+        newStruct = Types.StringStruct({
             str: _str,
             thirtyTwoBytes: _thirtyTwoBytes,
             isCreated: _isCreated
@@ -81,9 +83,9 @@ contract Setters is Getters, Ownable {
     function _createArrayStruct(
         uint256[] calldata _amounts,
         address[] calldata _addresses,
-        SomeStatus _status
-    ) private pure returns (ArrayStruct memory newStruct) {
-        newStruct = ArrayStruct({
+        Types.SomeStatus _status
+    ) private pure returns (Types.ArrayStruct memory newStruct) {
+        newStruct = Types.ArrayStruct({
             amounts: _amounts,
             addresses: _addresses,
             status: _status
@@ -95,15 +97,15 @@ contract Setters is Getters, Ownable {
         address _someAddress,
         bytes4 _functionSignature,
         uint256 _number,
-        SomeStatus _status
-    ) private pure returns (ParentStruct memory newStruct) {
-        ChildStruct memory _childStruct = ChildStruct({
+        Types.SomeStatus _status
+    ) private pure returns (Types.ParentStruct memory newStruct) {
+        Types.ChildStruct memory _childStruct = Types.ChildStruct({
             amount: _amount,
             someAddress: _someAddress,
             functionSignature: _functionSignature
         });
 
-        newStruct = ParentStruct({
+        newStruct = Types.ParentStruct({
             childStruct: _childStruct,
             number: _number,
             status: _status
@@ -113,8 +115,8 @@ contract Setters is Getters, Ownable {
     function setOneStorageSlotStruct(
         uint8 _oneByteNumber,
         uint64 _eightBytesNumber,
-        SomeStatus _status
-    ) external onlyOwner {
+        Types.SomeStatus _status
+    ) external override onlyOwner {
         _oneStorageSlotStruct = _createOneStorageSlotStruct(
             _oneByteNumber,
             _eightBytesNumber,
@@ -125,8 +127,8 @@ contract Setters is Getters, Ownable {
     function addOneStorageSlotStructArrayItem(
         uint8 _oneByteNumber,
         uint64 _eightBytesNumber,
-        SomeStatus _status
-    ) external {
+        Types.SomeStatus _status
+    ) external override {
         _oneStorageSlotStructArray.push(
             _createOneStorageSlotStruct(
                 _oneByteNumber,
@@ -139,8 +141,8 @@ contract Setters is Getters, Ownable {
     function addOneStorageSlotStructMappingItem(
         uint8 _oneByteNumber,
         uint64 _eightBytesNumber,
-        SomeStatus _status
-    ) external {
+        Types.SomeStatus _status
+    ) external override {
         _oneStorageSlotStructMappingCounter =
             _oneStorageSlotStructMappingCounter +
             1;
@@ -156,8 +158,8 @@ contract Setters is Getters, Ownable {
     function addOneStorageSlotStructNestedMappingItem(
         uint8 _oneByteNumber,
         uint64 _eightBytesNumber,
-        SomeStatus _status
-    ) external {
+        Types.SomeStatus _status
+    ) external override {
         _oneStorageSlotStructNestedMappingCounter =
             _oneStorageSlotStructNestedMappingCounter +
             1;
@@ -174,8 +176,8 @@ contract Setters is Getters, Ownable {
         uint256 _amount,
         address _someAddress,
         bytes calldata _data,
-        SomeStatus _status
-    ) external onlyOwner {
+        Types.SomeStatus _status
+    ) external override onlyOwner {
         _bytesStruct = _createBytesStruct(
             _amount,
             _someAddress,
@@ -188,8 +190,8 @@ contract Setters is Getters, Ownable {
         uint256 _amount,
         address _someAddress,
         bytes calldata _data,
-        SomeStatus _status
-    ) external {
+        Types.SomeStatus _status
+    ) external override {
         _bytesStructArray.push(
             _createBytesStruct(_amount, _someAddress, _data, _status)
         );
@@ -199,8 +201,8 @@ contract Setters is Getters, Ownable {
         uint256 _amount,
         address _someAddress,
         bytes calldata _data,
-        SomeStatus _status
-    ) external {
+        Types.SomeStatus _status
+    ) external override {
         _bytesStructMappingCounter = _bytesStructMappingCounter + 1;
         _bytesStructMapping[_bytesStructMappingCounter] = _createBytesStruct(
             _amount,
@@ -214,8 +216,8 @@ contract Setters is Getters, Ownable {
         uint256 _amount,
         address _someAddress,
         bytes calldata _data,
-        SomeStatus _status
-    ) external {
+        Types.SomeStatus _status
+    ) external override {
         _bytesStructNestedMappingCounter = _bytesStructNestedMappingCounter + 1;
         _bytesStructNestedMapping[_bytesStructNestedMappingCounter][
             msg.sender
@@ -226,7 +228,7 @@ contract Setters is Getters, Ownable {
         string calldata _str,
         bytes32 _thirtyTwoBytes,
         bool _isCreated
-    ) external onlyOwner {
+    ) external override onlyOwner {
         _stringStruct = _createStringStruct(_str, _thirtyTwoBytes, _isCreated);
     }
 
@@ -234,7 +236,7 @@ contract Setters is Getters, Ownable {
         string calldata _str,
         bytes32 _thirtyTwoBytes,
         bool _isCreated
-    ) external {
+    ) external override {
         _stringStructArray.push(
             _createStringStruct(_str, _thirtyTwoBytes, _isCreated)
         );
@@ -244,7 +246,7 @@ contract Setters is Getters, Ownable {
         string calldata _str,
         bytes32 _thirtyTwoBytes,
         bool _isCreated
-    ) external {
+    ) external override {
         _stringStructMappingCounter = _stringStructMappingCounter + 1;
         _stringStructMapping[_stringStructMappingCounter] = _createStringStruct(
             _str,
@@ -257,7 +259,7 @@ contract Setters is Getters, Ownable {
         string calldata _str,
         bytes32 _thirtyTwoBytes,
         bool _isCreated
-    ) external {
+    ) external override {
         _stringStructNestedMappingCounter =
             _stringStructNestedMappingCounter +
             1;
@@ -269,16 +271,16 @@ contract Setters is Getters, Ownable {
     function setArrayStruct(
         uint256[] calldata _amounts,
         address[] calldata _addresses,
-        SomeStatus _status
-    ) external onlyOwner {
+        Types.SomeStatus _status
+    ) external override onlyOwner {
         _arrayStruct = _createArrayStruct(_amounts, _addresses, _status);
     }
 
     function addArrayStructArrayItem(
         uint256[] calldata _amounts,
         address[] calldata _addresses,
-        SomeStatus _status
-    ) external {
+        Types.SomeStatus _status
+    ) external override {
         _arrayStructArray.push(
             _createArrayStruct(_amounts, _addresses, _status)
         );
@@ -287,8 +289,8 @@ contract Setters is Getters, Ownable {
     function addArrayStructMappingItem(
         uint256[] calldata _amounts,
         address[] calldata _addresses,
-        SomeStatus _status
-    ) external {
+        Types.SomeStatus _status
+    ) external override {
         _arrayStructMappingCounter = _arrayStructMappingCounter + 1;
         _arrayStructMapping[_arrayStructMappingCounter] = _createArrayStruct(
             _amounts,
@@ -300,8 +302,8 @@ contract Setters is Getters, Ownable {
     function addArrayStructNestedMappingItem(
         uint256[] calldata _amounts,
         address[] calldata _addresses,
-        SomeStatus _status
-    ) external {
+        Types.SomeStatus _status
+    ) external override {
         _arrayStructNestedMappingCounter = _arrayStructNestedMappingCounter + 1;
         _arrayStructNestedMapping[_arrayStructNestedMappingCounter][
             msg.sender
@@ -313,8 +315,8 @@ contract Setters is Getters, Ownable {
         address _someAddress,
         bytes4 _functionSignature,
         uint256 _number,
-        SomeStatus _status
-    ) external onlyOwner {
+        Types.SomeStatus _status
+    ) external override onlyOwner {
         _parentStruct = _createParentStruct(
             _amount,
             _someAddress,
@@ -329,8 +331,8 @@ contract Setters is Getters, Ownable {
         address _someAddress,
         bytes4 _functionSignature,
         uint256 _number,
-        SomeStatus _status
-    ) external {
+        Types.SomeStatus _status
+    ) external override {
         _parentStructArray.push(
             _createParentStruct(
                 _amount,
@@ -347,8 +349,8 @@ contract Setters is Getters, Ownable {
         address _someAddress,
         bytes4 _functionSignature,
         uint256 _number,
-        SomeStatus _status
-    ) external {
+        Types.SomeStatus _status
+    ) external override {
         _parentStructMappingCounter = _parentStructMappingCounter + 1;
         _parentStructMapping[_parentStructMappingCounter] = _createParentStruct(
             _amount,
@@ -364,8 +366,8 @@ contract Setters is Getters, Ownable {
         address _someAddress,
         bytes4 _functionSignature,
         uint256 _number,
-        SomeStatus _status
-    ) external {
+        Types.SomeStatus _status
+    ) external override {
         _parentStructNestedMappingCounter =
             _parentStructNestedMappingCounter +
             1;

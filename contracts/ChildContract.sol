@@ -2,6 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-contract ChildContract {
-    uint256 public childNumber = 3287423874;
+import "./interfaces/IChildContract.sol";
+
+contract ChildContract is IChildContract {
+    uint256 public override childNumber = 3287423874;
 }
