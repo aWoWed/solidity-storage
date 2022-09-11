@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-contract Types { 
+contract Types {
     enum SomeStatus {
         NotCreated,
         Canceled,
@@ -11,7 +11,7 @@ contract Types {
     }
 
     struct OneStorageSlotStruct {
-        uint8 oneByteNumber; 
+        uint8 oneByteNumber;
         uint64 eightBytesNumber;
         SomeStatus status;
     }
@@ -31,7 +31,7 @@ contract Types {
 
     struct ArrayStruct {
         address payable[] addresses;
-        uint[] amounts;
+        uint256[] amounts;
         SomeStatus status;
     }
 
@@ -44,6 +44,6 @@ contract Types {
     struct ParentStruct {
         ChildStruct childStruct;
         uint256 number;
-        SomeStatus status; 
+        SomeStatus status;
     }
 }
