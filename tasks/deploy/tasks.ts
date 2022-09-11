@@ -12,7 +12,10 @@ import {
   SUBTASK_SET_STRING_STRUCT,
   SUBTASK_SET_ARRAY_STRUCT,
   SUBTASK_SET_PARENT_STRUCT,
+  GET_STORAGE_SLOTS,
 } from './task-names';
+
+import { SomeStatus } from './types';
 
 task(TASK_DEPLOY)
   .addParam('nickname', 'deployer nickname', 'John Doe', types.string)
@@ -60,7 +63,7 @@ subtask(SUBTASK_DEPLOY_RETRIEVER)
       'StorageRetriever',
       deployer,
     );
-    const storageRetriever = await (await factory.deploy()).deployed();
+    const storageRetriever = await (await factory.deploy(params.nickname)).deployed();
 
     logDeployment(
       'Greeter',
@@ -75,7 +78,7 @@ subtask(SUBTASK_SET_ARRAY_MAPPING_VALUES)
   .addParam(
     'storageRetriever',
     'storageRetriever contract address',
-    '',
+    '0x2bb443Dd41267c4AAA413DE4F787B8f2D9d4bc56',
     types.string,
   )
   .setAction(async (params: string, hre) => {
@@ -118,7 +121,7 @@ subtask(SUBTASK_SET_ONESTORAGESLOT_STRUCT)
   .addParam(
     'storageRetriever',
     'storageRetriever contract address',
-    '',
+    '0x2bb443Dd41267c4AAA413DE4F787B8f2D9d4bc56',
     types.string,
   )
   .setAction(async (params: string, hre) => {
@@ -130,9 +133,9 @@ subtask(SUBTASK_SET_ONESTORAGESLOT_STRUCT)
       deployer,
     );
 
-    const oneByteNumber = 256;
+    const oneByteNumber = 255;
     const eightBytesNumber: BigNumber = hre.ethers.utils.parseUnits('12.99', 6);
-    const status = SomeStatus.Active;
+    const status: SomeStatus = SomeStatus.Active;
 
     await storageRetriever.setOneStorageSlotStruct(
       oneByteNumber,
@@ -169,7 +172,7 @@ subtask(SUBTASK_SET_BYTES_STRUCT)
   .addParam(
     'storageRetriever',
     'storageRetriever contract address',
-    '',
+    '0x2bb443Dd41267c4AAA413DE4F787B8f2D9d4bc56',
     types.string,
   )
   .setAction(async (params: string, hre) => {
@@ -188,7 +191,7 @@ subtask(SUBTASK_SET_BYTES_STRUCT)
       toHex(hre, amount, 32).substr(2) +
       toHex(hre, address, 32).substr(2) +
       address.substr(2);
-    const status = SomeStatus.Executed;
+    const status: SomeStatus = SomeStatus.Executed;
 
     await storageRetriever.setBytesStruct(amount, address, data, status);
     await delay(2000);
@@ -224,7 +227,7 @@ subtask(SUBTASK_SET_STRING_STRUCT)
   .addParam(
     'storageRetriever',
     'storageRetriever contract address',
-    '',
+    '0x2bb443Dd41267c4AAA413DE4F787B8f2D9d4bc56',
     types.string,
   )
   .setAction(async (params: string, hre) => {
@@ -238,7 +241,7 @@ subtask(SUBTASK_SET_STRING_STRUCT)
 
     const string =
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
-    const thirtyTwoBytes = deployer.address;
+    const thirtyTwoBytes = toHex(hre, deployer.address, 32);
     const _isCreated = true;
 
     await storageRetriever.setStringStruct(string, thirtyTwoBytes, _isCreated);
@@ -272,7 +275,7 @@ subtask(SUBTASK_SET_ARRAY_STRUCT)
   .addParam(
     'storageRetriever',
     'storageRetriever contract address',
-    '',
+    '0x2bb443Dd41267c4AAA413DE4F787B8f2D9d4bc56',
     types.string,
   )
   .setAction(async (params: string, hre) => {
@@ -322,7 +325,7 @@ subtask(SUBTASK_SET_PARENT_STRUCT)
   .addParam(
     'storageRetriever',
     'storageRetriever contract address',
-    '',
+    '0x2bb443Dd41267c4AAA413DE4F787B8f2D9d4bc56',
     types.string,
   )
   .setAction(async (params: string, hre) => {
@@ -378,3 +381,18 @@ subtask(SUBTASK_SET_PARENT_STRUCT)
 
     console.log('Completed');
   });
+
+task(GET_STORAGE_SLOTS)
+  .addParam(
+    'storageRetriever',
+    'storageRetriever contract address',
+    '0x2bb443Dd41267c4AAA413DE4F787B8f2D9d4bc56',
+    types.string,
+  )
+  .setAction(async (params: string, hre) => {
+    // overall 64 slots(because of structs)
+    for (let index = 0; index <= 64; index++){
+      console.log(`[${index}]` + 
+        await hre.ethers.provider.getStorageAt(params.storageRetriever, index))
+     }
+});

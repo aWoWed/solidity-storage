@@ -1,4 +1,4 @@
-enum SomeStatus {
+export enum SomeStatus {
   NotCreated,
   Canceled,
   Active,
