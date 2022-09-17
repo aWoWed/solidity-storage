@@ -2,7 +2,6 @@ import { BigNumber } from 'ethers';
 import { subtask, task, types } from 'hardhat/config';
 import '@nomiclabs/hardhat-ethers';
 
-import { logDeployment, preAction, delay, toHex } from './functions';
 import {
   TASK_DEPLOY,
   SUBTASK_DEPLOY_RETRIEVER,
@@ -12,9 +11,10 @@ import {
   SUBTASK_SET_STRING_STRUCT,
   SUBTASK_SET_ARRAY_STRUCT,
   SUBTASK_SET_PARENT_STRUCT,
-  GET_STORAGE_SLOTS,
 } from './task-names';
-import { SomeStatus } from './types';
+
+import { logDeployment, preAction, delay, toHex } from '../common/functions';
+import { SomeStatus } from '../common/types';
 
 task(TASK_DEPLOY)
   .addParam('nickname', 'deployer nickname', 'John Doe', types.string)
@@ -381,24 +381,4 @@ subtask(SUBTASK_SET_PARENT_STRUCT)
     await delay(2000);
 
     console.log('Completed');
-  });
-
-task(GET_STORAGE_SLOTS)
-  .addParam(
-    'storageRetriever',
-    'storageRetriever contract address',
-    '0x2bb443Dd41267c4AAA413DE4F787B8f2D9d4bc56',
-    types.string,
-  )
-  .setAction(async (params: string, hre) => {
-    // overall 64 slots(because of structs)
-    for (let index = 0; index <= 64; index++) {
-      console.log(
-        `[${index}]` +
-          (await hre.ethers.provider.getStorageAt(
-            params.storageRetriever,
-            index,
-          )),
-      );
-    }
   });

@@ -10,8 +10,12 @@ export const logDeployment = (
     colors.bold(colors.green(`${contractName} successfully deployed:`)),
   );
   args.forEach(([key, value]) =>
-    console.log(colors.bold(colors.yellow(`${key}:`)), `"${value}"`),
+    console.log(colors.bold(colors.yellow(`${key}:`)), `${value}`),
   );
+};
+
+export const logSlot = (variable: string, value: any): void => {
+  console.log(colors.bold(colors.yellow(`${variable}:`)), `"${value}"`);
 };
 
 export const delay = (ms: number): Promise<void> =>
