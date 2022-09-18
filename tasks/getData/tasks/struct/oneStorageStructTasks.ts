@@ -8,7 +8,6 @@ import {
   getNestedMappingKeyPreimage,
   getMappingKeyPreimage,
   logGetter,
-  getOneStorageSlotStructFromStorage,
 } from '../../../common/functions';
 import {
   GET_SLOT_25_ONE_STORAGE_SLOT_STRUCT,
@@ -16,6 +15,7 @@ import {
   GET_SLOT_27_28_ONE_STORAGE_SLOT_STRUCT_MAPPING,
   GET_SLOT_29_30_ONE_STORAGE_SLOT_STRUCT_NESTED_MAPPING,
 } from '../../task-names';
+import { getOneStorageSlotStructFromStorage } from '../../../common/structFunctions';
 
 task(GET_SLOT_25_ONE_STORAGE_SLOT_STRUCT)
   .addParam(

@@ -8,7 +8,6 @@ import {
   getNestedMappingKeyPreimage,
   getMappingKeyPreimage,
   logGetter,
-  getParentStructFromStorage,
 } from '../../../common/functions';
 import {
   GET_SLOT_56_59_PARENT_STRUCT,
@@ -16,6 +15,7 @@ import {
   GET_SLOT_61_62_PARENT_STRUCT_MAPPING,
   GET_SLOT_63_64_PARENT_STRUCT_NESTED_MAPPING,
 } from '../../task-names';
+import { getParentStructFromStorage } from '../../../common/structFunctions';
 
 task(GET_SLOT_56_59_PARENT_STRUCT)
   .addParam(

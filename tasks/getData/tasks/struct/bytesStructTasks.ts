@@ -8,7 +8,6 @@ import {
   getNestedMappingKeyPreimage,
   getMappingKeyPreimage,
   logGetter,
-  getBytesStructFromStorage,
 } from '../../../common/functions';
 import {
   GET_SLOT_31_34_BYTES_STRUCT,
@@ -16,6 +15,7 @@ import {
   GET_SLOT_36_37_BYTES_STRUCT_MAPPING,
   GET_SLOT_38_39_BYTES_STRUCT_NESTED_MAPPING,
 } from '../../task-names';
+import { getBytesStructFromStorage } from '../../../common/structFunctions';
 
 task(GET_SLOT_31_34_BYTES_STRUCT)
   .addParam(
