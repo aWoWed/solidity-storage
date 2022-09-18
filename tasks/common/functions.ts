@@ -2,15 +2,6 @@ import colors from 'colors';
 import { BigNumber } from 'ethers';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 
-import {
-  ArrayStruct,
-  BytesStruct,
-  OneStorageSlotStruct,
-  ParentStruct,
-  SomeStatus,
-  StringStruct,
-} from './types';
-
 export const logDeployment = (
   contractName: string,
   ...args: [string, unknown][]
