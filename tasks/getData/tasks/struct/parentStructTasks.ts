@@ -9,13 +9,13 @@ import {
   getMappingKeyPreimage,
   logGetter,
 } from '../../../common/functions';
+import { getParentStructFromStorage } from '../../../common/structFunctions';
 import {
   GET_SLOT_56_59_PARENT_STRUCT,
   GET_SLOT_60_PARENT_STRUCT_ARRAY,
   GET_SLOT_61_62_PARENT_STRUCT_MAPPING,
   GET_SLOT_63_64_PARENT_STRUCT_NESTED_MAPPING,
 } from '../../task-names';
-import { getParentStructFromStorage } from '../../../common/structFunctions';
 
 task(GET_SLOT_56_59_PARENT_STRUCT)
   .addParam(
