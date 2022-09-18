@@ -143,14 +143,17 @@ const createOneStorageStruct = (
   return new OneStorageSlotStruct(oneByteNumber, eightBytesNumber, status);
 };
 
-export const getOneStorageSlotStructFromStorage = async (hre: HardhatRuntimeEnvironment, contractAddress: string, key:string|number|BigNumber, logMessage: string) : Promise<OneStorageSlotStruct> => {
-  const oneStorageSlotStructFromStorage = await hre.ethers.provider.getStorageAt(
-        contractAddress,
-        key,
-      );
+export const getOneStorageSlotStructFromStorage = async (
+  hre: HardhatRuntimeEnvironment,
+  contractAddress: string,
+  key: string | number | BigNumber,
+  logMessage: string,
+): Promise<OneStorageSlotStruct> => {
+  const oneStorageSlotStructFromStorage =
+    await hre.ethers.provider.getStorageAt(contractAddress, key);
   logSlot(logMessage, oneStorageSlotStructFromStorage);
   return createOneStorageStruct(oneStorageSlotStructFromStorage);
-}
+};
 
 const createBytesStruct = (
   amount: BigNumber,
@@ -162,18 +165,22 @@ const createBytesStruct = (
   return new BytesStruct(amount, someAddress, data, statusParsed);
 };
 
-export const getBytesStructFromStorage = async (hre: HardhatRuntimeEnvironment, contractAddress: string, key0:string|number|BigNumber, key1:string|number|BigNumber, key2:string|number|BigNumber, key3:string|number|BigNumber, logMessage?: string|undefined|null) : Promise<BytesStruct>  => {
-  const amount = await hre.ethers.provider.getStorageAt(
-    contractAddress,
-    key0,
-  );
+export const getBytesStructFromStorage = async (
+  hre: HardhatRuntimeEnvironment,
+  contractAddress: string,
+  key0: string | number | BigNumber,
+  key1: string | number | BigNumber,
+  key2: string | number | BigNumber,
+  key3: string | number | BigNumber,
+  logMessage?: string | undefined | null,
+): Promise<BytesStruct> => {
+  const amount = await hre.ethers.provider.getStorageAt(contractAddress, key0);
   logSlot(`Slot ${key0}`, amount);
 
-  const someAddress =
-    await hre.ethers.provider.getStorageAt(
-      contractAddress,
-      key1,
-    );
+  const someAddress = await hre.ethers.provider.getStorageAt(
+    contractAddress,
+    key1,
+  );
   logSlot(`Slot ${key1}`, someAddress);
 
   const bytesLengthFromStorage = await hre.ethers.provider.getStorageAt(
@@ -191,17 +198,19 @@ export const getBytesStructFromStorage = async (hre: HardhatRuntimeEnvironment, 
     bytesKey,
   );
 
-  const status = await hre.ethers.provider.getStorageAt(
-    contractAddress,
-    key3,
-  );
+  const status = await hre.ethers.provider.getStorageAt(contractAddress, key3);
   logSlot(`Slot ${key3}`, status);
-  
-  if(logMessage !== undefined && logMessage !== null && logMessage !== "") {
+
+  if (logMessage !== undefined && logMessage !== null && logMessage !== '') {
     console.log(logMessage);
   }
-  return createBytesStruct(BigNumber.from(amount), someAddress, bytesConcatinated, status);
-}
+  return createBytesStruct(
+    BigNumber.from(amount),
+    someAddress,
+    bytesConcatinated,
+    status,
+  );
+};
 
 const createStringStruct = (
   str: string,
@@ -212,7 +221,14 @@ const createStringStruct = (
   return new StringStruct(str, bytes32, b);
 };
 
-export const getStringStructFromStorage = async (hre: HardhatRuntimeEnvironment, contractAddress: string, key0:string|number|BigNumber, key1:string|number|BigNumber, key2:string|number|BigNumber, logMessage?: string|undefined|null) : Promise<StringStruct> => {
+export const getStringStructFromStorage = async (
+  hre: HardhatRuntimeEnvironment,
+  contractAddress: string,
+  key0: string | number | BigNumber,
+  key1: string | number | BigNumber,
+  key2: string | number | BigNumber,
+  logMessage?: string | undefined | null,
+): Promise<StringStruct> => {
   const strLength = await hre.ethers.provider.getStorageAt(
     contractAddress,
     key0,
@@ -221,20 +237,11 @@ export const getStringStructFromStorage = async (hre: HardhatRuntimeEnvironment,
 
   const length = Number.parseInt(strLength, 16);
   const strKey = getKeyPreimage(hre, key0);
-  const str = await getBytesData(
-    hre,
-    length,
-    contractAddress,
-    strKey,
-  );
+  const str = await getBytesData(hre, length, contractAddress, strKey);
   const parsedStr = convertToString(str);
   logSlot(`Slot ${key0} with keyPreimage`, parsedStr);
 
-  const bytes32 =
-    await hre.ethers.provider.getStorageAt(
-      contractAddress,
-      key1,
-    );
+  const bytes32 = await hre.ethers.provider.getStorageAt(contractAddress, key1);
   logSlot(`Slot ${key1}`, bytes32);
 
   const isCreated = await hre.ethers.provider.getStorageAt(
@@ -243,11 +250,15 @@ export const getStringStructFromStorage = async (hre: HardhatRuntimeEnvironment,
   );
   logSlot(`Slot ${key2}`, isCreated);
 
-  if(logMessage !== undefined && logMessage !== null && logMessage !== "") {
+  if (logMessage !== undefined && logMessage !== null && logMessage !== '') {
     console.log(logMessage);
   }
-  return createStringStruct(parsedStr, bytes32, isCreated.slice(isCreated.length - 1));
-}
+  return createStringStruct(
+    parsedStr,
+    bytes32,
+    isCreated.slice(isCreated.length - 1),
+  );
+};
 
 const createArrayStruct = (
   addresses: string[],
@@ -258,7 +269,14 @@ const createArrayStruct = (
   return new ArrayStruct(addresses, amounts, statusParsed);
 };
 
-export const getArrayStructFromStorage = async (hre: HardhatRuntimeEnvironment, contractAddress: string, key0:string|number|BigNumber, key1:string|number|BigNumber, key2:string|number|BigNumber, logMessage?: string|undefined|null) : Promise<ArrayStruct> => {
+export const getArrayStructFromStorage = async (
+  hre: HardhatRuntimeEnvironment,
+  contractAddress: string,
+  key0: string | number | BigNumber,
+  key1: string | number | BigNumber,
+  key2: string | number | BigNumber,
+  logMessage?: string | undefined | null,
+): Promise<ArrayStruct> => {
   const addressesLength = await hre.ethers.provider.getStorageAt(
     contractAddress,
     key0,
@@ -287,29 +305,19 @@ export const getArrayStructFromStorage = async (hre: HardhatRuntimeEnvironment, 
   for (let i = 0; i < lengthAmounts; i++) {
     const key = getKeyPreimage(hre, key1);
     const elem = BigNumber.from(
-      await hre.ethers.provider.getStorageAt(
-        contractAddress,
-        key.add(i),
-      ),
+      await hre.ethers.provider.getStorageAt(contractAddress, key.add(i)),
     );
     amounts.push(elem);
   }
 
-  const status = await hre.ethers.provider.getStorageAt(
-    contractAddress,
-    key2,
-  );
+  const status = await hre.ethers.provider.getStorageAt(contractAddress, key2);
   logSlot(`Slot ${key2}`, status);
 
-  if(logMessage !== undefined && logMessage !== null && logMessage !== "") {
+  if (logMessage !== undefined && logMessage !== null && logMessage !== '') {
     console.log(logMessage);
   }
-  return createArrayStruct(
-    addresses,
-    amounts,
-    status.slice(status.length - 1),
-  );
-}
+  return createArrayStruct(addresses, amounts, status.slice(status.length - 1));
+};
 
 const createParentStruct = (
   amount: BigNumber,
@@ -335,34 +343,35 @@ const createParentStruct = (
   );
 };
 
-export const getParentStructFromStorage = async (hre: HardhatRuntimeEnvironment, contractAddress: string, key0:string|number|BigNumber, key1:string|number|BigNumber, key2:string|number|BigNumber, key3:string|number|BigNumber, logMessage?: string|undefined|null) : Promise<ParentStruct>  => {
-  const amount = await hre.ethers.provider.getStorageAt(
-    contractAddress,
-    key0,
-  );
+export const getParentStructFromStorage = async (
+  hre: HardhatRuntimeEnvironment,
+  contractAddress: string,
+  key0: string | number | BigNumber,
+  key1: string | number | BigNumber,
+  key2: string | number | BigNumber,
+  key3: string | number | BigNumber,
+  logMessage?: string | undefined | null,
+): Promise<ParentStruct> => {
+  const amount = await hre.ethers.provider.getStorageAt(contractAddress, key0);
   logSlot(`Slot ${key0}`, amount);
 
   const someAddressAndFunctionSignature =
-    await hre.ethers.provider.getStorageAt(
-      contractAddress,
-      key1,
-    );
+    await hre.ethers.provider.getStorageAt(contractAddress, key1);
   logSlot(`Slot ${key1}`, someAddressAndFunctionSignature);
 
-  const number = await hre.ethers.provider.getStorageAt(
-    contractAddress,
-    key2,
-  );
+  const number = await hre.ethers.provider.getStorageAt(contractAddress, key2);
   logSlot(`Slot ${key2}`, number);
 
-  const status = await hre.ethers.provider.getStorageAt(
-    contractAddress,
-    key3,
-  );
+  const status = await hre.ethers.provider.getStorageAt(contractAddress, key3);
   logSlot(`Slot ${key3}`, status);
-  
-  if(logMessage !== undefined && logMessage !== null && logMessage !== "") {
+
+  if (logMessage !== undefined && logMessage !== null && logMessage !== '') {
     console.log(logMessage);
   }
-  return createParentStruct(BigNumber.from(amount), someAddressAndFunctionSignature, BigNumber.from(number), status);
-}
+  return createParentStruct(
+    BigNumber.from(amount),
+    someAddressAndFunctionSignature,
+    BigNumber.from(number),
+    status,
+  );
+};

@@ -31,7 +31,13 @@ task(GET_SLOT_48_50_ARRAY_STRUCT)
     const storageIndexAmounts = 49;
     const storageIndexStatus = 50;
 
-    const arrayStructParsed = await getArrayStructFromStorage(hre, params.storageRetriever, storageIndexAddresses, storageIndexAmounts, storageIndexStatus);
+    const arrayStructParsed = await getArrayStructFromStorage(
+      hre,
+      params.storageRetriever,
+      storageIndexAddresses,
+      storageIndexAmounts,
+      storageIndexStatus,
+    );
 
     const storageRetriever = await hre.ethers.getContractAt(
       'StorageRetriever',
@@ -65,7 +71,14 @@ task(GET_SLOT_51_ARRAY_STRUCT_ARRAY)
 
     const keyPreimage = getKeyPreimage(hre, storageIndex);
     for (let i = 0; i < arrayLengthParsed; i++) {
-      const arrayStructParsed = await getArrayStructFromStorage(hre, params.storageRetriever, keyPreimage, keyPreimage.add(1), keyPreimage.add(2), `\nSlot ${storageIndex} with keyPreimage and index ${i}`);
+      const arrayStructParsed = await getArrayStructFromStorage(
+        hre,
+        params.storageRetriever,
+        keyPreimage,
+        keyPreimage.add(1),
+        keyPreimage.add(2),
+        `\nSlot ${storageIndex} with keyPreimage and index ${i}`,
+      );
     }
 
     const storageRetriever = await hre.ethers.getContractAt(
@@ -121,7 +134,14 @@ task(GET_SLOT_52_53_ARRAY_STRUCT_MAPPING)
         BigNumber.from(storageIndexMapping),
       );
 
-      const arrayStructParsed = await getArrayStructFromStorage(hre, params.storageRetriever, keyPreimage, keyPreimage.add(1), keyPreimage.add(2), `\nSlot ${storageIndexMapping} with keyPreimage and index ${key}`);
+      const arrayStructParsed = await getArrayStructFromStorage(
+        hre,
+        params.storageRetriever,
+        keyPreimage,
+        keyPreimage.add(1),
+        keyPreimage.add(2),
+        `\nSlot ${storageIndexMapping} with keyPreimage and index ${key}`,
+      );
     }
 
     for (let key = 1; key <= stringStructCounter; key++) {
@@ -176,7 +196,14 @@ task(GET_SLOT_54_55_ARRAY_STRUCT_NESTED_MAPPING)
         BigNumber.from(key1),
       );
 
-      const arrayStructParsed = await getArrayStructFromStorage(hre, params.storageRetriever, keyPreimage, keyPreimage.add(1), keyPreimage.add(2), `\nSlot ${storageIndexNestedMapping} with keyPreimage and key ${key} and key1 ${key1}`);
+      const arrayStructParsed = await getArrayStructFromStorage(
+        hre,
+        params.storageRetriever,
+        keyPreimage,
+        keyPreimage.add(1),
+        keyPreimage.add(2),
+        `\nSlot ${storageIndexNestedMapping} with keyPreimage and key ${key} and key1 ${key1}`,
+      );
     }
 
     for (let key = 1; key <= nestedMappingCounter; key++) {

@@ -28,7 +28,13 @@ task(GET_SLOT_25_ONE_STORAGE_SLOT_STRUCT)
     const [signer] = await hre.ethers.getSigners();
 
     const storageIndex = 25;
-    const oneStorageSlotStructFromStorage = await getOneStorageSlotStructFromStorage(hre, params.storageRetriever, storageIndex, `Slot ${storageIndex}`);
+    const oneStorageSlotStructFromStorage =
+      await getOneStorageSlotStructFromStorage(
+        hre,
+        params.storageRetriever,
+        storageIndex,
+        `Slot ${storageIndex}`,
+      );
 
     const storageRetriever = await hre.ethers.getContractAt(
       'StorageRetriever',
@@ -64,7 +70,13 @@ task(GET_SLOT_26_ONE_STORAGE_SLOT_STRUCT_ARRAY)
 
     const keyPreimage = getKeyPreimage(hre, storageIndex);
     for (let i = 0; i < arrayLengthParsed; i++) {
-      const oneStorageSlotStructFromStorage = await getOneStorageSlotStructFromStorage(hre, params.storageRetriever, keyPreimage, `\nSlot ${storageIndex} with keyPreimage and index ${i}`);
+      const oneStorageSlotStructFromStorage =
+        await getOneStorageSlotStructFromStorage(
+          hre,
+          params.storageRetriever,
+          keyPreimage,
+          `\nSlot ${storageIndex} with keyPreimage and index ${i}`,
+        );
     }
 
     const storageRetriever = await hre.ethers.getContractAt(
@@ -123,7 +135,13 @@ task(GET_SLOT_27_28_ONE_STORAGE_SLOT_STRUCT_MAPPING)
         BigNumber.from(key),
         BigNumber.from(storageIndexMapping),
       );
-      const oneStorageSlotStructFromStorage = await getOneStorageSlotStructFromStorage(hre, params.storageRetriever, keyPreimage, `\nSlot ${storageIndexMapping} with keyPreimage and key ${key}`);
+      const oneStorageSlotStructFromStorage =
+        await getOneStorageSlotStructFromStorage(
+          hre,
+          params.storageRetriever,
+          keyPreimage,
+          `\nSlot ${storageIndexMapping} with keyPreimage and key ${key}`,
+        );
     }
 
     for (let key = 1; key <= oneStorageSlotStructCounter; key++) {
@@ -182,7 +200,13 @@ task(GET_SLOT_29_30_ONE_STORAGE_SLOT_STRUCT_NESTED_MAPPING)
         BigNumber.from(storageIndexNestedMapping),
         BigNumber.from(key1),
       );
-      const oneStorageSlotStructFromStorage = await getOneStorageSlotStructFromStorage(hre, params.storageRetriever, keyPreimage, `\nSlot ${storageIndexNestedMapping} with keyPreimage and key0 ${key} and key1 ${key1}`);
+      const oneStorageSlotStructFromStorage =
+        await getOneStorageSlotStructFromStorage(
+          hre,
+          params.storageRetriever,
+          keyPreimage,
+          `\nSlot ${storageIndexNestedMapping} with keyPreimage and key0 ${key} and key1 ${key1}`,
+        );
     }
 
     for (let key = 1; key <= nestedMappingCounter; key++) {
