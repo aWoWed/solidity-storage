@@ -5,10 +5,10 @@ import '@nomiclabs/hardhat-ethers';
 import {
   logSlot,
   getKeyPreimage,
-  getOneStorageStruct,
   getNestedMappingKeyPreimage,
   getMappingKeyPreimage,
   logGetter,
+  getOneStorageSlotStructFromStorage,
 } from '../../../common/functions';
 import {
   GET_SLOT_25_ONE_STORAGE_SLOT_STRUCT,
@@ -28,16 +28,7 @@ task(GET_SLOT_25_ONE_STORAGE_SLOT_STRUCT)
     const [signer] = await hre.ethers.getSigners();
 
     const storageIndex = 25;
-    const oneStorageSlotStructFromStorage =
-      await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        storageIndex,
-      );
-
-    logSlot(`Slot ${storageIndex}`, oneStorageSlotStructFromStorage);
-    const oneStorageSlotStructParsed = getOneStorageStruct(
-      oneStorageSlotStructFromStorage,
-    );
+    const oneStorageSlotStructFromStorage = await getOneStorageSlotStructFromStorage(hre, params.storageRetriever, storageIndex, `Slot ${storageIndex}`);
 
     const storageRetriever = await hre.ethers.getContractAt(
       'StorageRetriever',
@@ -73,15 +64,7 @@ task(GET_SLOT_26_ONE_STORAGE_SLOT_STRUCT_ARRAY)
 
     const keyPreimage = getKeyPreimage(hre, storageIndex);
     for (let i = 0; i < arrayLengthParsed; i++) {
-      const elem = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage,
-      );
-      logSlot(
-        `\nSlot ${storageIndex} with keyPreimage and index ${i}`,
-        BigNumber.from(elem),
-      );
-      const oneStorageSlotStructParsed = getOneStorageStruct(elem);
+      const oneStorageSlotStructFromStorage = await getOneStorageSlotStructFromStorage(hre, params.storageRetriever, keyPreimage, `\nSlot ${storageIndex} with keyPreimage and index ${i}`);
     }
 
     const storageRetriever = await hre.ethers.getContractAt(
@@ -140,15 +123,7 @@ task(GET_SLOT_27_28_ONE_STORAGE_SLOT_STRUCT_MAPPING)
         BigNumber.from(key),
         BigNumber.from(storageIndexMapping),
       );
-      const elem = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage,
-      );
-      logSlot(
-        `\nSlot ${storageIndexMapping} with keyPreimage and key ${key}`,
-        elem,
-      );
-      const oneStorageSlotStructParsed = getOneStorageStruct(elem);
+      const oneStorageSlotStructFromStorage = await getOneStorageSlotStructFromStorage(hre, params.storageRetriever, keyPreimage, `\nSlot ${storageIndexMapping} with keyPreimage and key ${key}`);
     }
 
     for (let key = 1; key <= oneStorageSlotStructCounter; key++) {
@@ -207,15 +182,7 @@ task(GET_SLOT_29_30_ONE_STORAGE_SLOT_STRUCT_NESTED_MAPPING)
         BigNumber.from(storageIndexNestedMapping),
         BigNumber.from(key1),
       );
-      const elem = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage,
-      );
-      logSlot(
-        `Slot ${storageIndexNestedMapping} with keyPreimage and key0 ${key} and key1 ${key1}`,
-        elem,
-      );
-      const oneStorageSlotStructParsed = getOneStorageStruct(elem);
+      const oneStorageSlotStructFromStorage = await getOneStorageSlotStructFromStorage(hre, params.storageRetriever, keyPreimage, `\nSlot ${storageIndexNestedMapping} with keyPreimage and key0 ${key} and key1 ${key1}`);
     }
 
     for (let key = 1; key <= nestedMappingCounter; key++) {

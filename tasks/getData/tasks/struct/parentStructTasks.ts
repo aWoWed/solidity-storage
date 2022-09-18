@@ -8,7 +8,7 @@ import {
   getNestedMappingKeyPreimage,
   getMappingKeyPreimage,
   logGetter,
-  getParentStruct,
+  getParentStructFromStorage,
 } from '../../../common/functions';
 import {
   GET_SLOT_56_59_PARENT_STRUCT,
@@ -28,41 +28,11 @@ task(GET_SLOT_56_59_PARENT_STRUCT)
     const [signer] = await hre.ethers.getSigners();
 
     const storageIndexAmount = 56;
-    const childStructAmountFromStorage = await hre.ethers.provider.getStorageAt(
-      params.storageRetriever,
-      storageIndexAmount,
-    );
-    logSlot(`Slot ${storageIndexAmount}`, childStructAmountFromStorage);
-
     const storageIndexAddressAndSig = 57;
-    const childStructFromStorage = await hre.ethers.provider.getStorageAt(
-      params.storageRetriever,
-      storageIndexAddressAndSig,
-    );
-    logSlot(`Slot ${storageIndexAddressAndSig}`, childStructFromStorage);
-
     const storageIndexNumber = 58;
-    const parentStructNumberFromStorage =
-      await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        storageIndexNumber,
-      );
-    logSlot(`Slot ${storageIndexNumber}`, parentStructNumberFromStorage);
-
     const storageIndexStatus = 59;
-    const parentStructStatusFromStorage =
-      await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        storageIndexStatus,
-      );
-    logSlot(`Slot ${storageIndexStatus}`, parentStructStatusFromStorage);
 
-    const parentStructParsed = getParentStruct(
-      BigNumber.from(childStructAmountFromStorage),
-      childStructFromStorage,
-      BigNumber.from(parentStructNumberFromStorage),
-      parentStructStatusFromStorage,
-    );
+    const parentStructParsed = await getParentStructFromStorage(hre, params.storageRetriever, storageIndexAmount, storageIndexAddressAndSig, storageIndexNumber, storageIndexStatus);
 
     const storageRetriever = await hre.ethers.getContractAt(
       'StorageRetriever',
@@ -96,35 +66,7 @@ task(GET_SLOT_60_PARENT_STRUCT_ARRAY)
 
     const keyPreimage = getKeyPreimage(hre, storageIndex);
     for (let i = 0; i < arrayLengthParsed; i++) {
-      const childStructAmountFromStorage =
-        await hre.ethers.provider.getStorageAt(
-          params.storageRetriever,
-          keyPreimage,
-        );
-
-      const childStructFromStorage = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage.add(1),
-      );
-
-      const parentStructNumberFromStorage =
-        await hre.ethers.provider.getStorageAt(
-          params.storageRetriever,
-          keyPreimage.add(2),
-        );
-
-      const parentStructStatusFromStorage =
-        await hre.ethers.provider.getStorageAt(
-          params.storageRetriever,
-          keyPreimage.add(3),
-        );
-
-      const parentStructParsed = getParentStruct(
-        BigNumber.from(childStructAmountFromStorage),
-        childStructFromStorage,
-        BigNumber.from(parentStructNumberFromStorage),
-        parentStructStatusFromStorage,
-      );
+      const parentStructParsed = await getParentStructFromStorage(hre, params.storageRetriever, keyPreimage, keyPreimage.add(1), keyPreimage.add(2), keyPreimage.add(3), `\nSlot ${storageIndex} with keyPreimage and index ${i}`);
     }
 
     const storageRetriever = await hre.ethers.getContractAt(
@@ -178,38 +120,7 @@ task(GET_SLOT_61_62_PARENT_STRUCT_MAPPING)
         BigNumber.from(storageIndexMapping),
       );
 
-      const childStructAmountFromStorage =
-        await hre.ethers.provider.getStorageAt(
-          params.storageRetriever,
-          keyPreimage,
-        );
-
-      const childStructFromStorage = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage.add(1),
-      );
-
-      const parentStructNumberFromStorage =
-        await hre.ethers.provider.getStorageAt(
-          params.storageRetriever,
-          keyPreimage.add(2),
-        );
-
-      const parentStructStatusFromStorage =
-        await hre.ethers.provider.getStorageAt(
-          params.storageRetriever,
-          keyPreimage.add(3),
-        );
-
-      console.log(
-        `\nSlot ${storageIndexMapping} with keyPreimage and key ${key}`,
-      );
-      const parentStructParsed = getParentStruct(
-        BigNumber.from(childStructAmountFromStorage),
-        childStructFromStorage,
-        BigNumber.from(parentStructNumberFromStorage),
-        parentStructStatusFromStorage,
-      );
+      const parentStructParsed = await getParentStructFromStorage(hre, params.storageRetriever, keyPreimage, keyPreimage.add(1), keyPreimage.add(2), keyPreimage.add(3), `\nSlot ${storageIndexMapping} with keyPreimage and key ${key}`);
     }
 
     for (let key = 1; key <= parentStructCounter; key++) {
@@ -264,38 +175,7 @@ task(GET_SLOT_63_64_PARENT_STRUCT_NESTED_MAPPING)
         BigNumber.from(key1),
       );
 
-      const childStructAmountFromStorage =
-        await hre.ethers.provider.getStorageAt(
-          params.storageRetriever,
-          keyPreimage,
-        );
-
-      const childStructFromStorage = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage.add(1),
-      );
-
-      const parentStructNumberFromStorage =
-        await hre.ethers.provider.getStorageAt(
-          params.storageRetriever,
-          keyPreimage.add(2),
-        );
-
-      const parentStructStatusFromStorage =
-        await hre.ethers.provider.getStorageAt(
-          params.storageRetriever,
-          keyPreimage.add(3),
-        );
-
-      console.log(
-        `\nSlot ${storageIndexNestedMapping} with keyPreimage and key0 ${key} and key1 ${key1}`,
-      );
-      const parentStructParsed = getParentStruct(
-        BigNumber.from(childStructAmountFromStorage),
-        childStructFromStorage,
-        BigNumber.from(parentStructNumberFromStorage),
-        parentStructStatusFromStorage,
-      );
+      const parentStructParsed = await getParentStructFromStorage(hre, params.storageRetriever, keyPreimage, keyPreimage.add(1), keyPreimage.add(2), keyPreimage.add(3), `\nSlot ${storageIndexNestedMapping} with keyPreimage and key0 ${key} and key1 ${key1}`);    
     }
 
     for (let key = 1; key <= nestedMappingCounter; key++) {

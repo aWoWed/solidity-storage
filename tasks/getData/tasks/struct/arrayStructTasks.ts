@@ -8,7 +8,7 @@ import {
   getNestedMappingKeyPreimage,
   getMappingKeyPreimage,
   logGetter,
-  getArrayStruct,
+  getArrayStructFromStorage,
 } from '../../../common/functions';
 import {
   GET_SLOT_48_50_ARRAY_STRUCT,
@@ -28,55 +28,10 @@ task(GET_SLOT_48_50_ARRAY_STRUCT)
     const [signer] = await hre.ethers.getSigners();
 
     const storageIndexAddresses = 48;
-    const addressesLengthFromStorage = await hre.ethers.provider.getStorageAt(
-      params.storageRetriever,
-      storageIndexAddresses,
-    );
-    logSlot(`Slot ${storageIndexAddresses}`, addressesLengthFromStorage);
-    const lengthAddresses = Number.parseInt(addressesLengthFromStorage, 16);
-
-    const addresses: string[] = [];
-    for (let i = 0; i < lengthAddresses; i++) {
-      const key = getKeyPreimage(hre, storageIndexAddresses);
-      const elem = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        key.add(i),
-      );
-      addresses.push(elem);
-    }
-
     const storageIndexAmounts = 49;
-    const amountsFromStorage = await hre.ethers.provider.getStorageAt(
-      params.storageRetriever,
-      storageIndexAmounts,
-    );
-    logSlot(`Slot ${storageIndexAmounts}`, amountsFromStorage);
-    const lengthAmounts = Number.parseInt(amountsFromStorage, 16);
+    const storageIndexStatus = 50;
 
-    const amounts: BigNumber[] = [];
-    for (let i = 0; i < lengthAmounts; i++) {
-      const key = getKeyPreimage(hre, storageIndexAmounts);
-      const elem = BigNumber.from(
-        await hre.ethers.provider.getStorageAt(
-          params.storageRetriever,
-          key.add(i),
-        ),
-      );
-      amounts.push(elem);
-    }
-
-    const storageIndexData = 50;
-    const statusFromStorage = await hre.ethers.provider.getStorageAt(
-      params.storageRetriever,
-      storageIndexData,
-    );
-    logSlot(`Slot ${storageIndexData}`, statusFromStorage);
-
-    const arrayStructParsed = getArrayStruct(
-      addresses,
-      amounts,
-      statusFromStorage.slice(statusFromStorage.length - 1),
-    );
+    const arrayStructParsed = await getArrayStructFromStorage(hre, params.storageRetriever, storageIndexAddresses, storageIndexAmounts, storageIndexStatus);
 
     const storageRetriever = await hre.ethers.getContractAt(
       'StorageRetriever',
@@ -110,51 +65,7 @@ task(GET_SLOT_51_ARRAY_STRUCT_ARRAY)
 
     const keyPreimage = getKeyPreimage(hre, storageIndex);
     for (let i = 0; i < arrayLengthParsed; i++) {
-      const addressesLengthFromStorage = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage,
-      );
-      const lengthAddresses = Number.parseInt(addressesLengthFromStorage, 16);
-
-      const addresses: string[] = [];
-      for (let i = 0; i < lengthAddresses; i++) {
-        const key = getKeyPreimage(hre, keyPreimage);
-        const elem = await hre.ethers.provider.getStorageAt(
-          params.storageRetriever,
-          key.add(i),
-        );
-        addresses.push(elem);
-      }
-
-      const amountsLengthFromStorage = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage.add(1),
-      );
-      const lengthAmounts = Number.parseInt(amountsLengthFromStorage, 16);
-
-      const amounts: BigNumber[] = [];
-      for (let i = 0; i < lengthAmounts; i++) {
-        const key = getKeyPreimage(hre, keyPreimage.add(1));
-        const elem = BigNumber.from(
-          await hre.ethers.provider.getStorageAt(
-            params.storageRetriever,
-            key.add(i),
-          ),
-        );
-        amounts.push(elem);
-      }
-
-      const statusFromStorage = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage,
-      );
-
-      console.log(`\nSlot ${storageIndex} with keyPreimage and index ${i}`);
-      const arrayStructParsed = getArrayStruct(
-        addresses,
-        amounts,
-        statusFromStorage.slice(statusFromStorage.length - 1),
-      );
+      const arrayStructParsed = await getArrayStructFromStorage(hre, params.storageRetriever, keyPreimage, keyPreimage.add(1), keyPreimage.add(2), `\nSlot ${storageIndex} with keyPreimage and index ${i}`);
     }
 
     const storageRetriever = await hre.ethers.getContractAt(
@@ -210,53 +121,7 @@ task(GET_SLOT_52_53_ARRAY_STRUCT_MAPPING)
         BigNumber.from(storageIndexMapping),
       );
 
-      const addressesLengthFromStorage = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage,
-      );
-      const lengthAddresses = Number.parseInt(addressesLengthFromStorage, 16);
-
-      const addresses: string[] = [];
-      for (let i = 0; i < lengthAddresses; i++) {
-        const key = getKeyPreimage(hre, keyPreimage);
-        const elem = await hre.ethers.provider.getStorageAt(
-          params.storageRetriever,
-          key.add(i),
-        );
-        addresses.push(elem);
-      }
-
-      const amountsLengthFromStorage = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage.add(1),
-      );
-      const lengthAmounts = Number.parseInt(amountsLengthFromStorage, 16);
-
-      const amounts: BigNumber[] = [];
-      for (let i = 0; i < lengthAmounts; i++) {
-        const key = getKeyPreimage(hre, keyPreimage.add(1));
-        const elem = BigNumber.from(
-          await hre.ethers.provider.getStorageAt(
-            params.storageRetriever,
-            key.add(i),
-          ),
-        );
-        amounts.push(elem);
-      }
-
-      const statusFromStorage = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage,
-      );
-
-      console.log(
-        `\nSlot ${storageIndexMapping} with keyPreimage and index ${key}`,
-      );
-      const arrayStructParsed = getArrayStruct(
-        addresses,
-        amounts,
-        statusFromStorage.slice(statusFromStorage.length - 1),
-      );
+      const arrayStructParsed = await getArrayStructFromStorage(hre, params.storageRetriever, keyPreimage, keyPreimage.add(1), keyPreimage.add(2), `\nSlot ${storageIndexMapping} with keyPreimage and index ${key}`);
     }
 
     for (let key = 1; key <= stringStructCounter; key++) {
@@ -311,53 +176,7 @@ task(GET_SLOT_54_55_ARRAY_STRUCT_NESTED_MAPPING)
         BigNumber.from(key1),
       );
 
-      const addressesLengthFromStorage = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage,
-      );
-      const lengthAddresses = Number.parseInt(addressesLengthFromStorage, 16);
-
-      const addresses: string[] = [];
-      for (let i = 0; i < lengthAddresses; i++) {
-        const key = getKeyPreimage(hre, keyPreimage);
-        const elem = await hre.ethers.provider.getStorageAt(
-          params.storageRetriever,
-          key.add(i),
-        );
-        addresses.push(elem);
-      }
-
-      const amountsLengthFromStorage = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage.add(1),
-      );
-      const lengthAmounts = Number.parseInt(amountsLengthFromStorage, 16);
-
-      const amounts: BigNumber[] = [];
-      for (let i = 0; i < lengthAmounts; i++) {
-        const key = getKeyPreimage(hre, keyPreimage.add(1));
-        const elem = BigNumber.from(
-          await hre.ethers.provider.getStorageAt(
-            params.storageRetriever,
-            key.add(i),
-          ),
-        );
-        amounts.push(elem);
-      }
-
-      const statusFromStorage = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage,
-      );
-
-      console.log(
-        `\nSlot ${storageIndexNestedMapping} with keyPreimage and index ${key}`,
-      );
-      const arrayStructParsed = getArrayStruct(
-        addresses,
-        amounts,
-        statusFromStorage.slice(statusFromStorage.length - 1),
-      );
+      const arrayStructParsed = await getArrayStructFromStorage(hre, params.storageRetriever, keyPreimage, keyPreimage.add(1), keyPreimage.add(2), `\nSlot ${storageIndexNestedMapping} with keyPreimage and key ${key} and key1 ${key1}`);
     }
 
     for (let key = 1; key <= nestedMappingCounter; key++) {

@@ -7,9 +7,8 @@ import {
   getKeyPreimage,
   getNestedMappingKeyPreimage,
   getMappingKeyPreimage,
-  getBytesData,
-  getBytesStruct,
   logGetter,
+  getBytesStructFromStorage,
 } from '../../../common/functions';
 import {
   GET_SLOT_31_34_BYTES_STRUCT,
@@ -29,52 +28,11 @@ task(GET_SLOT_31_34_BYTES_STRUCT)
     const [signer] = await hre.ethers.getSigners();
 
     const storageIndexAmount = 31;
-    const bytesStructAmountFromStorage = await hre.ethers.provider.getStorageAt(
-      params.storageRetriever,
-      storageIndexAmount,
-    );
-    logSlot(`Slot ${storageIndexAmount}`, bytesStructAmountFromStorage);
-
     const storageIndexSomeAddress = 32;
-    const bytesStructSomeAddressFromStorage =
-      await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        storageIndexSomeAddress,
-      );
-    logSlot(
-      `Slot ${storageIndexSomeAddress}`,
-      bytesStructSomeAddressFromStorage,
-    );
-
     const storageIndexData = 33;
-    const bytesLengthFromStorage = await hre.ethers.provider.getStorageAt(
-      params.storageRetriever,
-      storageIndexData,
-    );
-    logSlot(`Slot ${storageIndexData}`, bytesLengthFromStorage);
-    const bytesLength = Number.parseInt(bytesLengthFromStorage, 16);
-    logSlot(`BytesLength parsed`, bytesLength);
-    const bytesKey = getKeyPreimage(hre, storageIndexData);
-    const bytesConcatinated = await getBytesData(
-      hre,
-      bytesLength,
-      params.storageRetriever,
-      bytesKey,
-    );
-
     const storageIndexStatus = 34;
-    const bytesStructStatusFromStorage = await hre.ethers.provider.getStorageAt(
-      params.storageRetriever,
-      storageIndexStatus,
-    );
-    logSlot(`Slot ${storageIndexStatus}`, bytesStructStatusFromStorage);
 
-    const bytesStructParsed = getBytesStruct(
-      BigNumber.from(bytesStructAmountFromStorage),
-      bytesStructSomeAddressFromStorage,
-      bytesConcatinated,
-      bytesStructStatusFromStorage,
-    );
+    const bytesStruct = await getBytesStructFromStorage(hre, params.storageRetriever, storageIndexAmount, storageIndexSomeAddress, storageIndexData, storageIndexStatus);
 
     const storageRetriever = await hre.ethers.getContractAt(
       'StorageRetriever',
@@ -108,41 +66,7 @@ task(GET_SLOT_35_BYTES_STRUCT_ARRAY)
 
     const keyPreimage = getKeyPreimage(hre, storageIndex);
     for (let i = 0; i < arrayLengthParsed; i++) {
-      const amount = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage,
-      );
-      const someAddress = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage.add(1),
-      );
-
-      const dataLength = Number.parseInt(
-        await hre.ethers.provider.getStorageAt(
-          params.storageRetriever,
-          keyPreimage.add(2),
-        ),
-      );
-      const bytesKey = getKeyPreimage(hre, keyPreimage.add(2));
-      const data = await getBytesData(
-        hre,
-        dataLength,
-        params.storageRetriever,
-        bytesKey,
-      );
-
-      const status = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage.add(3),
-      );
-
-      console.log(`\nSlot ${storageIndex} with keyPreimage and index ${i}`);
-      const bytesStructParsed = getBytesStruct(
-        BigNumber.from(amount),
-        someAddress,
-        data,
-        status,
-      );
+      const bytesStruct = await getBytesStructFromStorage(hre, params.storageRetriever, keyPreimage, keyPreimage.add(1), keyPreimage.add(2), keyPreimage.add(3), `\nSlot ${storageIndex} with keyPreimage and index ${i}`);
     }
 
     const storageRetriever = await hre.ethers.getContractAt(
@@ -197,42 +121,7 @@ task(GET_SLOT_36_37_BYTES_STRUCT_MAPPING)
         BigNumber.from(key),
         BigNumber.from(storageIndexMapping),
       );
-      const amount = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage,
-      );
-      const someAddress = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage.add(1),
-      );
-
-      const dataLength = Number.parseInt(
-        await hre.ethers.provider.getStorageAt(
-          params.storageRetriever,
-          keyPreimage.add(2),
-        ),
-      );
-      const bytesKey = getKeyPreimage(hre, keyPreimage.add(2));
-      const data = await getBytesData(
-        hre,
-        dataLength,
-        params.storageRetriever,
-        bytesKey,
-      );
-
-      const status = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage.add(3),
-      );
-      console.log(
-        `\nSlot ${storageIndexMapping} with keyPreimage and key ${key}`,
-      );
-      const bytesStructParsed = getBytesStruct(
-        BigNumber.from(amount),
-        someAddress,
-        data,
-        status,
-      );
+      const bytesStruct = await getBytesStructFromStorage(hre, params.storageRetriever, keyPreimage, keyPreimage.add(1), keyPreimage.add(2), keyPreimage.add(3), `\nSlot ${storageIndexMapping} with keyPreimage and key ${key}`);
     }
 
     for (let key = 1; key <= bytesStructCounter; key++) {
@@ -286,43 +175,7 @@ task(GET_SLOT_38_39_BYTES_STRUCT_NESTED_MAPPING)
         BigNumber.from(storageIndexNestedMapping),
         BigNumber.from(key1),
       );
-
-      const amount = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage,
-      );
-      const someAddress = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage.add(1),
-      );
-
-      const dataLength = Number.parseInt(
-        await hre.ethers.provider.getStorageAt(
-          params.storageRetriever,
-          keyPreimage.add(2),
-        ),
-      );
-      const bytesKey = getKeyPreimage(hre, keyPreimage.add(2));
-      const data = await getBytesData(
-        hre,
-        dataLength,
-        params.storageRetriever,
-        bytesKey,
-      );
-
-      const status = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage.add(3),
-      );
-      console.log(
-        `\nSlot ${storageIndexNestedMapping} with keyPreimage and key ${key}`,
-      );
-      const bytesStructParsed = getBytesStruct(
-        BigNumber.from(amount),
-        someAddress,
-        data,
-        status,
-      );
+      const bytesStruct = await getBytesStructFromStorage(hre, params.storageRetriever, keyPreimage, keyPreimage.add(1), keyPreimage.add(2), keyPreimage.add(3), `\nSlot ${storageIndexNestedMapping} with keyPreimage and key0 ${key} and key1 ${key1}`);
     }
 
     for (let key = 1; key <= nestedMappingCounter; key++) {
