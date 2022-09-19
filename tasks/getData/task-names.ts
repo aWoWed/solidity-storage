@@ -1,6 +1,6 @@
 export const GET_STORAGE_SLOTS = 'get-storage-slots';
-export const GET_SLOT_0_OWNER = 'get-slot-0';
-export const GET_SLOT_1_CHILD_NUMBER = 'get-slot-1';
+export const GET_SLOT_0_OWNER_ADDRESS = 'get-slot-0';
+export const GET_SLOT_1_CHILD_NUMBER_UINT256 = 'get-slot-1';
 export const GET_SLOT_2_THIRTY_TWO_BYTES_NUMBER = 'get-slot-2';
 export const GET_SLOT_3_MANY_NUMBERS = 'get-slot-3';
 export const GET_SLOT_4_DEPLOYER_ADDRESS = 'get-slot-4';

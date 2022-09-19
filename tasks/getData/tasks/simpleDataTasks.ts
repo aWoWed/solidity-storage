@@ -4,8 +4,8 @@ import '@nomiclabs/hardhat-ethers';
 
 import { logGetter, logSlot } from '../../common/functions';
 import {
-  GET_SLOT_0_OWNER,
-  GET_SLOT_1_CHILD_NUMBER,
+  GET_SLOT_0_OWNER_ADDRESS,
+  GET_SLOT_1_CHILD_NUMBER_UINT256,
   GET_SLOT_2_THIRTY_TWO_BYTES_NUMBER,
   GET_SLOT_3_MANY_NUMBERS,
   GET_SLOT_4_DEPLOYER_ADDRESS,
@@ -35,7 +35,7 @@ task(GET_STORAGE_SLOTS)
     }
   });
 
-task(GET_SLOT_0_OWNER)
+task(GET_SLOT_0_OWNER_ADDRESS)
   .addParam(
     'storageRetriever',
     'storageRetriever contract address',
@@ -61,7 +61,7 @@ task(GET_SLOT_0_OWNER)
     logGetter('Owner', owner);
   });
 
-task(GET_SLOT_1_CHILD_NUMBER)
+task(GET_SLOT_1_CHILD_NUMBER_UINT256)
   .addParam(
     'storageRetriever',
     'storageRetriever contract address',
