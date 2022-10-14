@@ -347,8 +347,14 @@ task(GET_SLOT_6_BYTES_VARIABLES)
     logSlot(`Separated Slot ${storageIndex} bytes8`, eightBytesFromStorage);
     logSlot(`Separated Slot ${storageIndex} bytes16`, sixteenBytesFromStorage);
 
-    logSlot(`Separated Slot ${storageIndex} bytes8 parsed`, convertToString(eightBytesFromStorage));
-    logSlot(`Separated Slot ${storageIndex} bytes16 parsed`, convertToString(sixteenBytesFromStorage));
+    logSlot(
+      `Separated Slot ${storageIndex} bytes8 parsed`,
+      convertToString(eightBytesFromStorage),
+    );
+    logSlot(
+      `Separated Slot ${storageIndex} bytes16 parsed`,
+      convertToString(sixteenBytesFromStorage),
+    );
 
     logGetter('EightBytes', eightBytes);
     logGetter('SixteenBytes', sixteenBytes);
@@ -378,7 +384,10 @@ task(GET_SLOT_7_BYTES32)
     const thirtyTwoBytes = await storageRetriever.getThirtyTwoBytes();
 
     logSlot(`Slot ${storageIndex}`, thirtyTwoBytesFromStorage);
-    logSlot(`Separated Slot ${storageIndex} bytes32 parsed`, convertToString(thirtyTwoBytesFromStorage));
+    logSlot(
+      `Separated Slot ${storageIndex} bytes32 parsed`,
+      convertToString(thirtyTwoBytesFromStorage),
+    );
 
     logGetter('ThirtyTwoBytes bytes32', thirtyTwoBytes);
   });

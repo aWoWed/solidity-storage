@@ -47,7 +47,7 @@ export const getVariableFromMulltiSlot = (
   );
 
 export const convertToString = (variable: string): string => {
-  let result:string = '';
+  let result = '';
   for (let i = 0; i < variable.length; i += 2) {
     const substr: number = Number.parseInt(variable.slice(i, i + 2), 16);
     result += String.fromCharCode(substr);
