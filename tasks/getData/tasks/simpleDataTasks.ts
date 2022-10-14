@@ -2,7 +2,11 @@ import { BigNumber } from 'ethers';
 import { task, types } from 'hardhat/config';
 import '@nomiclabs/hardhat-ethers';
 
-import { getVariableFromMulltiSlot, logGetter, logSlot } from '../../common/functions';
+import {
+  getVariableFromMulltiSlot,
+  logGetter,
+  logSlot,
+} from '../../common/functions';
 import {
   GET_SLOT_0_OWNER_ADDRESS,
   GET_SLOT_1_CHILD_NUMBER_UINT256,
@@ -138,11 +142,31 @@ task(GET_SLOT_3_MANY_NUMBERS)
       params.storageRetriever,
       storageIndex,
     );
-    const sixteenBytesNumberFromStorage = getVariableFromMulltiSlot(manyNumbersFromStorage, 32, 0);
-    const eightBytesNumberFromStorage = getVariableFromMulltiSlot(manyNumbersFromStorage, 48, 32);
-    const fourBytesNumberFromStorage = getVariableFromMulltiSlot(manyNumbersFromStorage, 56, 48);
-    const twoBytesNumberFromStorage = getVariableFromMulltiSlot(manyNumbersFromStorage, 60, 56);
-    const oneByteNumberFromStorage = getVariableFromMulltiSlot(manyNumbersFromStorage, 62, 60);
+    const sixteenBytesNumberFromStorage = getVariableFromMulltiSlot(
+      manyNumbersFromStorage,
+      32,
+      0,
+    );
+    const eightBytesNumberFromStorage = getVariableFromMulltiSlot(
+      manyNumbersFromStorage,
+      48,
+      32,
+    );
+    const fourBytesNumberFromStorage = getVariableFromMulltiSlot(
+      manyNumbersFromStorage,
+      56,
+      48,
+    );
+    const twoBytesNumberFromStorage = getVariableFromMulltiSlot(
+      manyNumbersFromStorage,
+      60,
+      56,
+    );
+    const oneByteNumberFromStorage = getVariableFromMulltiSlot(
+      manyNumbersFromStorage,
+      62,
+      60,
+    );
 
     const storageRetriever = await hre.ethers.getContractAt(
       'StorageRetriever',
@@ -227,10 +251,26 @@ task(GET_SLOT_5_MANY_VARIABLES)
       params.storageRetriever,
       storageIndex,
     );
-    const payableAddressFromStorage = getVariableFromMulltiSlot(manyVariablesFromStorage, 40, 0);
-    const isDeployedFromStorage = getVariableFromMulltiSlot(manyVariablesFromStorage, 42, 40);
-    const isNotDeployedFromStorage = getVariableFromMulltiSlot(manyVariablesFromStorage, 44, 42);
-    const functionSignatureFromStorage = getVariableFromMulltiSlot(manyVariablesFromStorage, 52, 44);
+    const payableAddressFromStorage = getVariableFromMulltiSlot(
+      manyVariablesFromStorage,
+      40,
+      0,
+    );
+    const isDeployedFromStorage = getVariableFromMulltiSlot(
+      manyVariablesFromStorage,
+      42,
+      40,
+    );
+    const isNotDeployedFromStorage = getVariableFromMulltiSlot(
+      manyVariablesFromStorage,
+      44,
+      42,
+    );
+    const functionSignatureFromStorage = getVariableFromMulltiSlot(
+      manyVariablesFromStorage,
+      52,
+      44,
+    );
 
     const storageRetriever = await hre.ethers.getContractAt(
       'StorageRetriever',
@@ -282,9 +322,17 @@ task(GET_SLOT_6_BYTES_VARIABLES)
       params.storageRetriever,
       storageIndex,
     );
-    const eightBytesFromStorage = getVariableFromMulltiSlot(bytesVariablesFromStorage, 16, 0);
-    const sixteenBytesFromStorage = getVariableFromMulltiSlot(bytesVariablesFromStorage, 48, 16);
-    
+    const eightBytesFromStorage = getVariableFromMulltiSlot(
+      bytesVariablesFromStorage,
+      16,
+      0,
+    );
+    const sixteenBytesFromStorage = getVariableFromMulltiSlot(
+      bytesVariablesFromStorage,
+      48,
+      16,
+    );
+
     const storageRetriever = await hre.ethers.getContractAt(
       'StorageRetriever',
       params.storageRetriever,

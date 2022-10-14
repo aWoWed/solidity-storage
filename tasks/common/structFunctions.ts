@@ -1,7 +1,13 @@
 import { BigNumber } from 'ethers';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
-import { convertToString, getBytesData, getKeyPreimage, getVariableFromMulltiSlot, logSlot } from './functions';
 
+import {
+  convertToString,
+  getBytesData,
+  getKeyPreimage,
+  getVariableFromMulltiSlot,
+  logSlot,
+} from './functions';
 import {
   ArrayStruct,
   BytesStruct,
@@ -15,7 +21,7 @@ const createOneStorageStruct = (
   oneStorageSlotStructFromStorage: string,
 ): OneStorageSlotStruct => {
   const oneByteNumber: number = Number.parseInt(
-      getVariableFromMulltiSlot(oneStorageSlotStructFromStorage, 2, 0),
+    getVariableFromMulltiSlot(oneStorageSlotStructFromStorage, 2, 0),
   );
   const eightBytesNumber: number = Number.parseInt(
     getVariableFromMulltiSlot(oneStorageSlotStructFromStorage, 18, 2),
@@ -209,8 +215,16 @@ const createParentStruct = (
   status: string,
 ): ParentStruct => {
   const statusParsed: SomeStatus = Number.parseInt(status);
-  const someAddress: string = getVariableFromMulltiSlot(someAddressAndFunctionSignature, 40, 0);
-  const functionSignature: string = getVariableFromMulltiSlot(someAddressAndFunctionSignature, 48, 40);
+  const someAddress: string = getVariableFromMulltiSlot(
+    someAddressAndFunctionSignature,
+    40,
+    0,
+  );
+  const functionSignature: string = getVariableFromMulltiSlot(
+    someAddressAndFunctionSignature,
+    48,
+    40,
+  );
   return new ParentStruct(
     amount,
     someAddress,
