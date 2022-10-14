@@ -34,6 +34,14 @@ export const toHex = (
   padding: number,
 ) => hre.ethers.utils.hexZeroPad(hre.ethers.utils.hexlify(covertThis), padding);
 
+export const getVariableFromMulltiSlot = (manyNumbersFromStorage: string, variableLength: number, otherVariablesLength: number): string => 
+  '0x'.concat(
+    manyNumbersFromStorage.slice(
+      manyNumbersFromStorage.length - variableLength,
+      manyNumbersFromStorage.length - otherVariablesLength,
+    ),
+  );
+
 export const convertToString = (variable: string): string => {
   let result = '';
   for (let i = 0; i < variable.length; i += 2) {

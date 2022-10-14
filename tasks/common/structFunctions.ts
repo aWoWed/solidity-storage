@@ -1,5 +1,6 @@
 import { BigNumber } from 'ethers';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
+import { convertToString, getBytesData, getKeyPreimage, getVariableFromMulltiSlot, logSlot } from './functions';
 
 import {
   ArrayStruct,
@@ -14,27 +15,13 @@ const createOneStorageStruct = (
   oneStorageSlotStructFromStorage: string,
 ): OneStorageSlotStruct => {
   const oneByteNumber: number = Number.parseInt(
-    '0x'.concat(
-      oneStorageSlotStructFromStorage.slice(
-        oneStorageSlotStructFromStorage.length - 2,
-      ),
-    ),
+      getVariableFromMulltiSlot(oneStorageSlotStructFromStorage, 2, 0),
   );
   const eightBytesNumber: number = Number.parseInt(
-    '0x'.concat(
-      oneStorageSlotStructFromStorage.slice(
-        oneStorageSlotStructFromStorage.length - 18,
-        oneStorageSlotStructFromStorage.length - 2,
-      ),
-    ),
+    getVariableFromMulltiSlot(oneStorageSlotStructFromStorage, 18, 2),
   );
   const status: SomeStatus = Number.parseInt(
-    '0x'.concat(
-      oneStorageSlotStructFromStorage.slice(
-        oneStorageSlotStructFromStorage.length - 19,
-        oneStorageSlotStructFromStorage.length - 18,
-      ),
-    ),
+    getVariableFromMulltiSlot(oneStorageSlotStructFromStorage, 19, 18),
   );
   return new OneStorageSlotStruct(oneByteNumber, eightBytesNumber, status);
 };
@@ -222,14 +209,8 @@ const createParentStruct = (
   status: string,
 ): ParentStruct => {
   const statusParsed: SomeStatus = Number.parseInt(status);
-  const someAddress: string = someAddressAndFunctionSignature.slice(
-    someAddressAndFunctionSignature.length - 40,
-    someAddressAndFunctionSignature.length,
-  );
-  const functionSignature: string = someAddressAndFunctionSignature.slice(
-    someAddressAndFunctionSignature.length - 48,
-    someAddressAndFunctionSignature.length - 40,
-  );
+  const someAddress: string = getVariableFromMulltiSlot(someAddressAndFunctionSignature, 40, 0);
+  const functionSignature: string = getVariableFromMulltiSlot(someAddressAndFunctionSignature, 48, 40);
   return new ParentStruct(
     amount,
     someAddress,
