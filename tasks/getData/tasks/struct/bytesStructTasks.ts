@@ -72,7 +72,7 @@ task(GET_SLOT_35_BYTES_STRUCT_ARRAY)
     logSlot(`ArrayLength from storage`, arrayLengthParsed);
 
     const keyPreimage = getKeyPreimage(hre, storageIndex);
-    const fieldsCount:BigNumber = BigNumber.from(4);
+    const fieldsCount: BigNumber = BigNumber.from(4);
     for (let i = 0; i < arrayLengthParsed; i++) {
       const keyPreimageArray = keyPreimage.add(fieldsCount.mul(i));
       const bytesStruct = await getBytesStructFromStorage(
