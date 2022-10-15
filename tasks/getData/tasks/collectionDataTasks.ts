@@ -10,6 +10,7 @@ import {
   getNestedMappingKeyPreimage,
   getBytesData,
   logGetter,
+  getArrayElements,
 } from '../../common/functions';
 import {
   GET_SLOT_10_15_FIXED_ARRAY,
@@ -38,7 +39,7 @@ task(GET_SLOT_8_STRING)
     const deployerNicknameFromStorage = await hre.ethers.provider.getStorageAt(
       params.storageRetriever,
       storageIndex,
-    ); // Should return str length only, but when str takes less then 128 bytes, than will be concatinated
+    ); // Should return str length only, but when str takes less then 248 bits, than will be concatinated
     const stringLength = BigNumber.from(
       '0x'.concat(
         deployerNicknameFromStorage.slice(
@@ -78,7 +79,7 @@ task(GET_SLOT_9_BYTES)
     const dataFromStorage = await hre.ethers.provider.getStorageAt(
       params.storageRetriever,
       storageIndex,
-    ); // Should return str length only, but when str takes less then 128 bits, than will be concatinated
+    ); // Should return str length only, but when str takes less then 256 bits, than will be concatinated
     const stringLength = Number.parseInt(dataFromStorage, 16);
 
     const keyPreimage = getKeyPreimage(hre, storageIndex);
@@ -164,27 +165,12 @@ task(GET_SLOT_16_UINT256_ARRAY)
     const [signer] = await hre.ethers.getSigners();
 
     const storageIndex = 16;
-    const numberArrayFromStorage = await hre.ethers.provider.getStorageAt(
+    const array = await getArrayElements(
+      hre,
       params.storageRetriever,
       storageIndex,
+      'number',
     );
-
-    logSlot(`Slot ${storageIndex}`, numberArrayFromStorage);
-
-    const arrayLengthFromStorage = Number.parseInt(numberArrayFromStorage, 16);
-    logSlot('ArrayLength from storage', arrayLengthFromStorage);
-
-    const keyPreimage = getKeyPreimage(hre, storageIndex);
-    for (let i = 0; i < arrayLengthFromStorage; i++) {
-      const elem = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage,
-      );
-      logSlot(
-        `Slot ${storageIndex} with keyPreimage and index ${i}`,
-        BigNumber.from(elem),
-      );
-    }
 
     const storageRetriever = await hre.ethers.getContractAt(
       'StorageRetriever',
@@ -199,7 +185,7 @@ task(GET_SLOT_16_UINT256_ARRAY)
     for (let i = 0; i < arrayLength; i++) {
       const elem =
         await await storageRetriever.getThirtyTwoBytesNumberArrayItem(i);
-      llogGettergSlot(`Item ${i}`, elem);
+      logGetter(`Item ${i}`, elem);
     }
   });
 
@@ -214,27 +200,12 @@ task(GET_SLOT_17_UINT128_ARRAY)
     const [signer] = await hre.ethers.getSigners();
 
     const storageIndex = 17;
-    const arrayFromStorage = await hre.ethers.provider.getStorageAt(
+    const array = await getArrayElements(
+      hre,
       params.storageRetriever,
       storageIndex,
+      'number',
     );
-
-    logSlot(`Slot ${storageIndex}`, arrayFromStorage);
-
-    const arrayLengthFromStorage = Number.parseInt(arrayFromStorage, 16);
-    logSlot('ArrayLength from storage', arrayLengthFromStorage);
-
-    const keyPreimage = getKeyPreimage(hre, storageIndex);
-    for (let i = 0; i < arrayLengthFromStorage; i++) {
-      const elem = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage,
-      );
-      logSlot(
-        `Slot ${storageIndex} with keyPreimage and index ${i}`,
-        BigNumber.from(elem),
-      );
-    }
 
     const storageRetriever = await hre.ethers.getContractAt(
       'StorageRetriever',
@@ -265,24 +236,11 @@ task(GET_SLOT_18_ADDRESS_ARRAY)
     const [signer] = await hre.ethers.getSigners();
 
     const storageIndex = 18;
-    const addressArrayFromStorage = await hre.ethers.provider.getStorageAt(
+    const array = await getArrayElements(
+      hre,
       params.storageRetriever,
       storageIndex,
     );
-
-    logSlot(`Slot ${storageIndex}`, addressArrayFromStorage);
-
-    const arrayLengthFromStorage = Number.parseInt(addressArrayFromStorage, 16);
-    logSlot('ArrayLength from storage', arrayLengthFromStorage);
-
-    const keyPreimage = getKeyPreimage(hre, storageIndex);
-    for (let i = 0; i < arrayLengthFromStorage; i++) {
-      const elem = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage,
-      );
-      logSlot(`Slot ${storageIndex} with keyPreimage and index ${i}`, elem);
-    }
 
     const storageRetriever = await hre.ethers.getContractAt(
       'StorageRetriever',
@@ -310,30 +268,12 @@ task(GET_SLOT_19_STRING_ARRAY)
     const [signer] = await hre.ethers.getSigners();
 
     const storageIndex = 19;
-    const stringArrayFromStorage = await hre.ethers.provider.getStorageAt(
+    const array = await getArrayElements(
+      hre,
       params.storageRetriever,
       storageIndex,
+      'string',
     );
-
-    logSlot(`Slot ${storageIndex}`, stringArrayFromStorage);
-
-    const arrayLengthFromStorage = Number.parseInt(stringArrayFromStorage, 16);
-    logSlot('ArrayLength from storage', arrayLengthFromStorage);
-
-    const keyPreimage = getKeyPreimage(hre, storageIndex);
-    for (let i = 0; i < arrayLengthFromStorage; i++) {
-      const elem = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage,
-      );
-      const stringLength = BigNumber.from(
-        '0x'.concat(elem.slice(elem.length - 1)),
-      ).toNumber();
-      const bytesStr = elem.slice(2, 2 + stringLength);
-      const parsedElem = convertToString(bytesStr);
-      logSlot(`Slot ${storageIndex} with keyPreimage and index ${i}`, elem);
-      logSlot(`Slot ${storageIndex} parsed`, parsedElem);
-    }
 
     const storageRetriever = await hre.ethers.getContractAt(
       'StorageRetriever',
@@ -361,24 +301,12 @@ task(GET_SLOT_20_BOOL_ARRAY)
     const [signer] = await hre.ethers.getSigners();
 
     const storageIndex = 20;
-    const boolArrayFromStorage = await hre.ethers.provider.getStorageAt(
+    const array = await getArrayElements(
+      hre,
       params.storageRetriever,
       storageIndex,
+      'number',
     );
-
-    logSlot(`Slot ${storageIndex}`, boolArrayFromStorage);
-
-    const arrayLengthFromStorage = Number.parseInt(boolArrayFromStorage, 16);
-    logSlot('ArrayLength from storage', arrayLengthFromStorage);
-
-    const keyPreimage = getKeyPreimage(hre, storageIndex);
-    for (let i = 0; i < arrayLengthFromStorage; i++) {
-      const elem = await hre.ethers.provider.getStorageAt(
-        params.storageRetriever,
-        keyPreimage,
-      );
-      logSlot(`Slot ${storageIndex} with keyPreimage and index ${i}`, elem);
-    }
 
     const storageRetriever = await hre.ethers.getContractAt(
       'StorageRetriever',

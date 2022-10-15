@@ -83,6 +83,53 @@ export const getKeyPreimage = (
   return BigNumber.from(newKey);
 };
 
+export const getArrayElements = async (
+  hre: HardhatRuntimeEnvironment,
+  contractAddress: string,
+  storageIndex: number,
+  logType?: string | undefined,
+): Promise<any[]> => {
+  const result: any[] = [];
+
+  const lenArrayFromStorage = await hre.ethers.provider.getStorageAt(
+    contractAddress,
+    storageIndex,
+  );
+  logSlot(`Slot ${storageIndex}`, lenArrayFromStorage);
+
+  const arrayLengthParsed = Number.parseInt(lenArrayFromStorage, 16);
+  logSlot('ArrayLengthParsed from storage', arrayLengthParsed);
+
+  const keyPreimage = getKeyPreimage(hre, storageIndex);
+  for (let i = 0; i < arrayLengthParsed; i++) {
+    const elem = await hre.ethers.provider.getStorageAt(
+      contractAddress,
+      keyPreimage.add(i),
+    );
+
+    if (logType === 'number') {
+      const e: BigNumber = BigNumber.from(elem);
+      logSlot(
+        `Slot ${storageIndex} with keyPreimage and index ${i}`,
+        BigNumber.from(elem),
+      );
+      result.push(e);
+    } else if (logType === 'string') {
+      const stringLength = BigNumber.from(
+        '0x'.concat(elem.slice(elem.length - 1)),
+      ).toNumber();
+      const bytesStr = elem.slice(2, 2 + stringLength);
+      const parsedElem = convertToString(bytesStr);
+      logSlot(`Slot ${storageIndex} with keyPreimage and index ${i}`, elem);
+      logSlot(`Slot ${storageIndex} parsed`, parsedElem);
+    } else {
+      logSlot(`Slot ${storageIndex} with keyPreimage and index ${i}`, elem);
+      result.push(elem);
+    }
+  }
+  return result;
+};
+
 export const getMappingKeyPreimage = (
   hre: HardhatRuntimeEnvironment,
   key: BigNumber,
@@ -91,10 +138,9 @@ export const getMappingKeyPreimage = (
   // The pre-image used to compute the Storage location
   const newKeyPreimage = hre.ethers.utils.concat([
     // Mappings' keys in Solidity must all be word-aligned (32 bytes)
-    hre.ethers.utils.hexZeroPad(key.toHexString(), 32),
-
+    toHex(hre, key.toHexString(), 32),
     // Similarly with the slot-index into the Solidity variable layout
-    hre.ethers.utils.hexZeroPad(storageSlot.toHexString(), 32),
+    toHex(hre, storageSlot.toHexString(), 32),
   ]);
 
   console.log('New Key Preimage:', hre.ethers.utils.hexlify(newKeyPreimage));
