@@ -70,13 +70,15 @@ task(GET_SLOT_51_ARRAY_STRUCT_ARRAY)
     logSlot(`ArrayLength from storage`, arrayLengthParsed);
 
     const keyPreimage = getKeyPreimage(hre, storageIndex);
+    const fieldsCount:BigNumber = BigNumber.from(3);
     for (let i = 0; i < arrayLengthParsed; i++) {
+      const keyPreimageArray = keyPreimage.add(fieldsCount.mul(i));
       const arrayStructParsed = await getArrayStructFromStorage(
         hre,
         params.storageRetriever,
-        keyPreimage.add(i),
-        keyPreimage.add(i).add(1),
-        keyPreimage.add(i).add(2),
+        keyPreimageArray,
+        keyPreimageArray.add(1),
+        keyPreimageArray.add(2),
         `\nSlot ${storageIndex} with keyPreimage and index ${i}`,
       );
     }

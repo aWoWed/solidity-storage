@@ -69,12 +69,13 @@ task(GET_SLOT_26_ONE_STORAGE_SLOT_STRUCT_ARRAY)
     logSlot(`ArrayLength from storage`, arrayLengthParsed);
 
     const keyPreimage = getKeyPreimage(hre, storageIndex);
+    const fieldsCount:BigNumber = BigNumber.from(1);
     for (let i = 0; i < arrayLengthParsed; i++) {
-      const oneStorageSlotStructFromStorage =
+      const keyPreimageArray = keyPreimage.add(fieldsCount.mul(i));
         await getOneStorageSlotStructFromStorage(
           hre,
           params.storageRetriever,
-          keyPreimage.add(i),
+          keyPreimageArray.add(i),
           `\nSlot ${storageIndex} with keyPreimage and index ${i}`,
         );
     }
