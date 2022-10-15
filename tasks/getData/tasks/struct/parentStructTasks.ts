@@ -76,10 +76,10 @@ task(GET_SLOT_60_PARENT_STRUCT_ARRAY)
       const parentStructParsed = await getParentStructFromStorage(
         hre,
         params.storageRetriever,
-        keyPreimage,
-        keyPreimage.add(1),
-        keyPreimage.add(2),
-        keyPreimage.add(3),
+        keyPreimage.add(i),
+        keyPreimage.add(i).add(1),
+        keyPreimage.add(i).add(2),
+        keyPreimage.add(i).add(3),
         `\nSlot ${storageIndex} with keyPreimage and index ${i}`,
       );
     }

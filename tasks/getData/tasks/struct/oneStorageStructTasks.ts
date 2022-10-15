@@ -74,7 +74,7 @@ task(GET_SLOT_26_ONE_STORAGE_SLOT_STRUCT_ARRAY)
         await getOneStorageSlotStructFromStorage(
           hre,
           params.storageRetriever,
-          keyPreimage,
+          keyPreimage.add(i),
           `\nSlot ${storageIndex} with keyPreimage and index ${i}`,
         );
     }
@@ -127,7 +127,6 @@ task(GET_SLOT_27_28_ONE_STORAGE_SLOT_STRUCT_MAPPING)
 
     const storageIndexMapping = 28;
     const mappingLength = Number.parseInt(mappingCounterFromStorage, 16);
-    logSlot(`MappingLength from storage`, mappingLength);
 
     for (let key = 1; key <= mappingLength; key++) {
       const keyPreimage = getMappingKeyPreimage(

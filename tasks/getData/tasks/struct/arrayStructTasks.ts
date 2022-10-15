@@ -74,9 +74,9 @@ task(GET_SLOT_51_ARRAY_STRUCT_ARRAY)
       const arrayStructParsed = await getArrayStructFromStorage(
         hre,
         params.storageRetriever,
-        keyPreimage,
-        keyPreimage.add(1),
-        keyPreimage.add(2),
+        keyPreimage.add(i),
+        keyPreimage.add(i).add(1),
+        keyPreimage.add(i).add(2),
         `\nSlot ${storageIndex} with keyPreimage and index ${i}`,
       );
     }

@@ -353,7 +353,7 @@ task(GET_SLOT_21_22_DEFAULT_MAPPING)
     const storageIndexMapping = 22;
     const mappingFromStorage = await hre.ethers.provider.getStorageAt(
       params.storageRetriever,
-      storageIndexCounter,
+      storageIndexMapping,
     );
     const mappingLength = Number.parseInt(mappingFromStorage, 16);
 
