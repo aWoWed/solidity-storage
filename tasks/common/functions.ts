@@ -55,7 +55,7 @@ export const convertToString = (variable: string): string => {
   return result;
 };
 
-export const getBytesData = async (
+const getBytesData = async (
   hre: HardhatRuntimeEnvironment,
   length: number,
   contractAddress: string,
@@ -72,6 +72,38 @@ export const getBytesData = async (
   }
   logSlot(`Concatinated Bytes`, result);
   return result;
+};
+
+export const getStringData = async (
+  hre: HardhatRuntimeEnvironment,
+  slotIndex: string | number | BigNumber,
+  elem: string,
+  contractAddress: string,
+): Promise<string> => {
+  let bytesStr = '0x';
+  let parsedElem = '';
+  let stringLength = 0;
+
+  if (elem[2] !== '0' || elem[3] !== '0') {
+    stringLength = BigNumber.from(
+      '0x'.concat(elem.slice(elem.length - 1)),
+    ).toNumber();
+    bytesStr = elem.slice(2, 2 + stringLength);
+  } else {
+    stringLength = Number.parseInt(elem, 16);
+
+    const keyPreimageString = getKeyPreimage(hre, slotIndex);
+    bytesStr = await getBytesData(
+      hre,
+      stringLength,
+      contractAddress,
+      keyPreimageString,
+    );
+  }
+  parsedElem = convertToString(bytesStr);
+  logSlot(`String in storage Length`, stringLength);
+  logSlot(`Slot ${slotIndex} parsed`, parsedElem);
+  return bytesStr;
 };
 
 export const getKeyPreimage = (
@@ -102,9 +134,10 @@ export const getArrayElements = async (
 
   const keyPreimage = getKeyPreimage(hre, storageIndex);
   for (let i = 0; i < arrayLengthParsed; i++) {
+    const arrayKeyPreimage: BigNumber = keyPreimage.add(i);
     const elem = await hre.ethers.provider.getStorageAt(
       contractAddress,
-      keyPreimage.add(i),
+      arrayKeyPreimage,
     );
 
     if (logType === 'number') {
@@ -115,17 +148,20 @@ export const getArrayElements = async (
       );
       result.push(e);
     } else if (logType === 'string') {
-      const stringLength = BigNumber.from(
-        '0x'.concat(elem.slice(elem.length - 1)),
-      ).toNumber();
-      const bytesStr = elem.slice(2, 2 + stringLength);
-      const parsedElem = convertToString(bytesStr);
-      logSlot(`Slot ${storageIndex} with keyPreimage and index ${i}`, elem);
-      logSlot(`Slot ${storageIndex} parsed`, parsedElem);
+      const stringData: string = await getStringData(
+        hre,
+        arrayKeyPreimage,
+        elem,
+        contractAddress,
+      );
+      logSlot(
+        `Slot ${arrayKeyPreimage} with keyPreimage and index ${i}`,
+        stringData,
+      );
     } else {
       logSlot(`Slot ${storageIndex} with keyPreimage and index ${i}`, elem);
-      result.push(elem);
     }
+    result.push(elem);
   }
   return result;
 };
