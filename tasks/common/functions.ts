@@ -76,13 +76,13 @@ export const getBytesData = async (
 
 export const getStringData = async (
   hre: HardhatRuntimeEnvironment,
-  slotIndex: BigNumber | number,
+  slotIndex: string | number | BigNumber,
   elem: string,
   contractAddress: string,
 ): Promise<string> => {
-  let bytesStr: string = '0x';
-  let parsedElem: string = '';
-  let stringLength: number = 0;
+  let bytesStr = '0x';
+  let parsedElem = '';
+  let stringLength = 0;
 
   if (elem[2] !== '0' || elem[3] !== '0') {
     stringLength = BigNumber.from(

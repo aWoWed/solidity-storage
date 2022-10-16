@@ -5,6 +5,7 @@ import {
   convertToString,
   getBytesData,
   getKeyPreimage,
+  getStringData,
   getVariableFromMulltiSlot,
   logSlot,
 } from './functions';
@@ -77,14 +78,12 @@ export const getBytesStructFromStorage = async (
     key2,
   );
   logSlot(`Slot ${key2}`, bytesLengthFromStorage);
-  const bytesLength = Number.parseInt(bytesLengthFromStorage, 16);
-  logSlot(`BytesLength parsed`, bytesLength);
-  const bytesKey = getKeyPreimage(hre, key2);
-  const bytesConcatinated = await getBytesData(
+
+  const bytesConcatinated = await getStringData(
     hre,
-    bytesLength,
+    key2,
+    bytesLengthFromStorage,
     contractAddress,
-    bytesKey,
   );
 
   const status = await hre.ethers.provider.getStorageAt(contractAddress, key3);
@@ -124,11 +123,7 @@ export const getStringStructFromStorage = async (
   );
   logSlot(`Slot ${key0}`, strLength);
 
-  const length = Number.parseInt(strLength, 16);
-  const strKey = getKeyPreimage(hre, key0);
-  const str = await getBytesData(hre, length, contractAddress, strKey);
-  const parsedStr = convertToString(str);
-  logSlot(`Slot ${key0} with keyPreimage`, parsedStr);
+  const str = await getStringData(hre, key0, strLength, contractAddress);
 
   const bytes32 = await hre.ethers.provider.getStorageAt(contractAddress, key1);
   logSlot(`Slot ${key1}`, bytes32);
