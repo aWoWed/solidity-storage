@@ -2,8 +2,6 @@ import { BigNumber } from 'ethers';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 
 import {
-  convertToString,
-  getBytesData,
   getKeyPreimage,
   getStringData,
   getVariableFromMulltiSlot,

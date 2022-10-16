@@ -5,10 +5,8 @@ import '@nomiclabs/hardhat-ethers';
 import {
   logSlot,
   convertToString,
-  getKeyPreimage,
   getMappingKeyPreimage,
   getNestedMappingKeyPreimage,
-  getBytesData,
   logGetter,
   getArrayElements,
   getStringData,
@@ -48,7 +46,6 @@ task(GET_SLOT_8_STRING)
       deployerNicknameFromStorage,
       params.storageRetriever,
     );
-    const deployerNicknameFromStorageParsed = convertToString(bytesStr);
 
     const storageRetriever = await hre.ethers.getContractAt(
       'StorageRetriever',
@@ -58,7 +55,6 @@ task(GET_SLOT_8_STRING)
     const deployerNickname = await storageRetriever.getDeployerNickname();
 
     logSlot(`Slot ${storageIndex}`, deployerNicknameFromStorage);
-    logSlot(`Slot ${storageIndex} parsed`, deployerNicknameFromStorageParsed);
 
     logGetter('DeployerNickname string', deployerNickname);
   });

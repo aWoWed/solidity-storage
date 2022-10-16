@@ -55,7 +55,7 @@ export const convertToString = (variable: string): string => {
   return result;
 };
 
-export const getBytesData = async (
+const getBytesData = async (
   hre: HardhatRuntimeEnvironment,
   length: number,
   contractAddress: string,
