@@ -11,6 +11,7 @@ import {
   getBytesData,
   logGetter,
   getArrayElements,
+  getStringData,
 } from '../../common/functions';
 import {
   GET_SLOT_10_15_FIXED_ARRAY,
@@ -40,15 +41,13 @@ task(GET_SLOT_8_STRING)
       params.storageRetriever,
       storageIndex,
     ); // Should return str length only, but when str takes less then 248 bits, than will be concatinated
-    const stringLength = BigNumber.from(
-      '0x'.concat(
-        deployerNicknameFromStorage.slice(
-          deployerNicknameFromStorage.length - 1,
-        ),
-      ),
-    ).toNumber();
 
-    const bytesStr = deployerNicknameFromStorage.slice(2, 2 + stringLength);
+    const bytesStr = await getStringData(
+      hre,
+      storageIndex,
+      deployerNicknameFromStorage,
+      params.storageRetriever,
+    );
     const deployerNicknameFromStorageParsed = convertToString(bytesStr);
 
     const storageRetriever = await hre.ethers.getContractAt(
@@ -59,7 +58,6 @@ task(GET_SLOT_8_STRING)
     const deployerNickname = await storageRetriever.getDeployerNickname();
 
     logSlot(`Slot ${storageIndex}`, deployerNicknameFromStorage);
-    logSlot(`String in storage Length`, stringLength);
     logSlot(`Slot ${storageIndex} parsed`, deployerNicknameFromStorageParsed);
 
     logGetter('DeployerNickname string', deployerNickname);
@@ -80,17 +78,12 @@ task(GET_SLOT_9_BYTES)
       params.storageRetriever,
       storageIndex,
     ); // Should return str length only, but when str takes less then 256 bits, than will be concatinated
-    const stringLength = Number.parseInt(dataFromStorage, 16);
 
-    const keyPreimage = getKeyPreimage(hre, storageIndex);
-    const bytesConcatinated = await getBytesData(
+    const bytesStr = await getStringData(
       hre,
-      stringLength,
+      storageIndex,
+      dataFromStorage,
       params.storageRetriever,
-      keyPreimage,
-    );
-    const parsedBytes = convertToString(
-      bytesConcatinated.slice(2, bytesConcatinated.length),
     );
 
     const storageRetriever = await hre.ethers.getContractAt(
@@ -102,12 +95,10 @@ task(GET_SLOT_9_BYTES)
     const dataParsed = convertToString(data.slice(2, data.length));
 
     logSlot(`Slot ${storageIndex}`, dataFromStorage);
-    logSlot(`Bytes in storage Length`, stringLength);
     logSlot(
       `Slot ${storageIndex} from keyPreimage bytesConcatinated`,
-      bytesConcatinated,
+      bytesStr,
     );
-    logSlot(`Slot ${storageIndex} from keyPreimage Parsed`, parsedBytes);
 
     logGetter('Data bytes', data);
     logGetter(`Data bytes parsed`, dataParsed);
